@@ -129,7 +129,7 @@ export default function OrderDetails({ params }) {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center">
-        <Loader className="animate-spin text-blue-600" size={32} />
+        <Loader className="animate-spin text-[#7b3306]" size={32} />
       </div>
     );
   }
@@ -138,7 +138,7 @@ export default function OrderDetails({ params }) {
     return (
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-6xl mx-auto">
-          <Link href="/dashboard/order" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-6">
+          <Link href="/dashboard/order" className="flex items-center gap-2 text-[#7b3306] hover:text-[#7b3306] mb-6">
             <ChevronLeft size={20} />
             Back to Orders
           </Link>
@@ -153,71 +153,71 @@ export default function OrderDetails({ params }) {
   const summary = calculateOrderSummary(order);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-3 md:p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <Link href="/dashboard/order" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-6">
+        <Link href="/dashboard/order" className="flex items-center gap-2 text-[#7b3306] hover:text-[#7b3306] mb-4 md:mb-6 text-sm md:text-base">
           <ChevronLeft size={20} />
           Back to Orders
         </Link>
 
         {successMessage && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-green-700 mb-6 flex items-center gap-2">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 md:p-4 text-green-700 mb-4 md:mb-6 flex items-center gap-2 text-sm md:text-base">
             <Check size={20} />
             {successMessage}
           </div>
         )}
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 mb-6 flex items-center gap-2">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 md:p-4 text-red-700 mb-4 md:mb-6 flex items-center gap-2 text-sm md:text-base">
             <AlertCircle size={20} />
             {error}
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 md:space-y-6">
             {/* Order Header */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex justify-between items-start mb-4">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Order {order.orderNumber}</h1>
-                  <p className="text-gray-600 mt-1">{formatDate(order.createdAt)}</p>
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-900">Order {order.orderNumber}</h1>
+                  <p className="text-gray-600 mt-1 text-sm md:text-base">{formatDate(order.createdAt)}</p>
                 </div>
-                <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(order.status, 'order')}`}>
+                <span className={`inline-block px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-semibold ${getStatusColor(order.status, 'order')}`}>
                   {getStatusLabel(order.status, 'order')}
                 </span>
               </div>
             </div>
 
             {/* Customer Information */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Customer Information</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Full Name</p>
-                  <p className="font-medium text-gray-900">{order.customerInfo?.firstName} {order.customerInfo?.lastName}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">Full Name</p>
+                  <p className="font-medium text-gray-900 text-sm md:text-base">{order.customerInfo?.firstName} {order.customerInfo?.lastName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Email</p>
-                  <p className="font-medium text-gray-900">{order.customerInfo?.email}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">Email</p>
+                  <p className="font-medium text-gray-900 text-sm md:text-base break-all">{order.customerInfo?.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Phone</p>
-                  <p className="font-medium text-gray-900">{order.customerInfo?.phone || 'N/A'}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">Phone</p>
+                  <p className="font-medium text-gray-900 text-sm md:text-base">{order.customerInfo?.phone || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">User ID</p>
-                  <p className="font-medium text-gray-900 text-xs break-all">{order.userId || 'N/A'}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">User ID</p>
+                  <p className="font-medium text-gray-900 text-xs md:text-sm break-all">{order.userId || 'N/A'}</p>
                 </div>
               </div>
             </div>
 
             {/* Shipping Address */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Shipping Address</h2>
-              <div className="space-y-2">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Shipping Address</h2>
+              <div className="space-y-2 text-sm md:text-base">
                 <p className="font-medium text-gray-900">{order.shippingInfo?.firstName} {order.shippingInfo?.lastName}</p>
                 <p className="text-gray-700">{order.shippingInfo?.address}</p>
                 <p className="text-gray-700">{order.shippingInfo?.city}, {order.shippingInfo?.state} {order.shippingInfo?.zipCode}</p>
@@ -226,26 +226,26 @@ export default function OrderDetails({ params }) {
             </div>
 
             {/* Order Items */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Items</h2>
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Order Items</h2>
               <div className="space-y-4">
                 {order.items?.map((item, idx) => (
-                  <div key={idx} className="flex justify-between items-center pb-4 border-b">
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">{item.name}</p>
-                      <p className="text-sm text-gray-600">SKU: {item.sku || 'N/A'}</p>
-                      <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                  <div key={idx} className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b gap-2">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 text-sm md:text-base">{item.name}</p>
+                      <p className="text-xs md:text-sm text-gray-600">SKU: {item.sku || 'N/A'}</p>
+                      <p className="text-xs md:text-sm text-gray-600">Qty: {item.quantity}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-gray-900">{formatPrice(item.price * item.quantity)}</p>
-                      <p className="text-sm text-gray-600">{formatPrice(item.price)} each</p>
+                      <p className="font-semibold text-gray-900 text-sm md:text-base">{formatPrice(item.price * item.quantity)}</p>
+                      <p className="text-xs md:text-sm text-gray-600">{formatPrice(item.price)} each</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Order Summary */}
-              <div className="mt-6 pt-6 border-t space-y-2">
+              <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t space-y-2 text-sm md:text-base">
                 <div className="flex justify-between text-gray-700">
                   <span>Subtotal</span>
                   <span>{formatPrice(summary.subtotal)}</span>
@@ -264,7 +264,7 @@ export default function OrderDetails({ params }) {
                     <span>-{formatPrice(summary.discount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t">
+                <div className="flex justify-between text-base md:text-lg font-bold text-gray-900 pt-2 border-t">
                   <span>Total</span>
                   <span>{formatPrice(summary.total)}</span>
                 </div>
@@ -272,16 +272,16 @@ export default function OrderDetails({ params }) {
             </div>
 
             {/* Payment Information */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Payment Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Payment Information</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Payment Method</p>
-                  <p className="font-medium text-gray-900 capitalize">{order.paymentMethod || 'N/A'}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">Payment Method</p>
+                  <p className="font-medium text-gray-900 capitalize text-sm md:text-base">{order.paymentMethod || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Payment Status</p>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.paymentStatus, 'payment')}`}>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">Payment Status</p>
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs md:text-sm font-medium ${getStatusColor(order.paymentStatus, 'payment')}`}>
                     {getStatusLabel(order.paymentStatus, 'payment')}
                   </span>
                 </div>
@@ -289,17 +289,17 @@ export default function OrderDetails({ params }) {
             </div>
 
             {/* Notes Section */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Notes</h2>
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Order Notes</h2>
 
               {/* Add Note Form */}
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="mb-4 md:mb-6 p-3 md:p-4 bg-gray-50 rounded-lg">
                 <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
                     Note Type
                   </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <label className="flex items-center text-sm">
                       <input
                         type="radio"
                         value="internal"
@@ -307,9 +307,9 @@ export default function OrderDetails({ params }) {
                         onChange={(e) => setNoteType(e.target.value)}
                         className="mr-2"
                       />
-                      <span className="text-sm text-gray-700">Internal (Staff Only)</span>
+                      <span className="text-xs md:text-sm text-gray-700">Internal (Staff Only)</span>
                     </label>
-                    <label className="flex items-center">
+                    <label className="flex items-center text-sm">
                       <input
                         type="radio"
                         value="customer"
@@ -317,7 +317,7 @@ export default function OrderDetails({ params }) {
                         onChange={(e) => setNoteType(e.target.value)}
                         className="mr-2"
                       />
-                      <span className="text-sm text-gray-700">Customer Visible</span>
+                      <span className="text-xs md:text-sm text-gray-700">Customer Visible</span>
                     </label>
                   </div>
                 </div>
@@ -326,14 +326,14 @@ export default function OrderDetails({ params }) {
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
                   placeholder="Add a note..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-3"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] focus:border-transparent mb-3"
                   rows="3"
                 />
 
                 <button
                   onClick={handleAddNote}
                   disabled={addingNote || !newNote.trim()}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-[#7b3306] text-white rounded-lg hover:bg-[#5a2600] disabled:opacity-50 disabled:cursor-not-allowed transition text-sm w-full md:w-auto"
                 >
                   {addingNote ? <Loader className="animate-spin" size={18} /> : <Plus size={18} />}
                   Add Note
@@ -341,26 +341,26 @@ export default function OrderDetails({ params }) {
               </div>
 
               {/* Notes List */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {notes.length === 0 ? (
                   <p className="text-gray-500 text-sm">No notes yet</p>
                 ) : (
                   notes.map((note, idx) => (
-                    <div key={idx} className="p-4 border border-gray-200 rounded-lg">
-                      <div className="flex justify-between items-start mb-2">
+                    <div key={idx} className="p-3 md:p-4 border border-gray-200 rounded-lg">
+                      <div className="flex justify-between items-start gap-2 mb-2 flex-col sm:flex-row">
                         <div>
-                          <p className="font-medium text-gray-900">{note.createdBy || 'System'}</p>
+                          <p className="font-medium text-gray-900 text-sm md:text-base">{note.createdBy || 'System'}</p>
                           <p className="text-xs text-gray-500">{formatDate(note.createdAt)}</p>
                         </div>
                         <span className={`text-xs font-semibold px-2 py-1 rounded ${
                           note.type === 'internal'
                             ? 'bg-gray-100 text-gray-700'
-                            : 'bg-blue-100 text-blue-700'
+                            : 'bg-[#7b3306] text-white'
                         }`}>
                           {note.type === 'internal' ? 'Internal' : 'Customer'}
                         </span>
                       </div>
-                      <p className="text-gray-700">{note.text}</p>
+                      <p className="text-gray-700 text-sm md:text-base">{note.text}</p>
                     </div>
                   ))
                 )}
@@ -369,19 +369,19 @@ export default function OrderDetails({ params }) {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             {/* Status Update */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Update Status</h3>
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Update Status</h3>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
                   Order Status
                 </label>
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] focus:border-transparent"
                 >
                   {orderStatuses.map(status => (
                     <option key={status.value} value={status.value}>
@@ -391,20 +391,20 @@ export default function OrderDetails({ params }) {
                 </select>
               </div>
 
-              <label className="flex items-center mb-4">
+              <label className="flex items-center mb-4 text-sm">
                 <input
                   type="checkbox"
                   checked={notifyCustomer}
                   onChange={(e) => setNotifyCustomer(e.target.checked)}
                   className="mr-2"
                 />
-                <span className="text-sm text-gray-700">Notify customer</span>
+                <span className="text-xs md:text-sm text-gray-700">Notify customer</span>
               </label>
 
               <button
                 onClick={handleStatusUpdate}
                 disabled={updatingStatus || selectedStatus === order.status}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="w-full flex items-center justify-center gap-2 px-3 md:px-4 py-2 bg-[#7b3306] text-white rounded-lg hover:bg-[#5a2600] disabled:opacity-50 disabled:cursor-not-allowed transition text-sm md:text-base"
               >
                 {updatingStatus ? <Loader className="animate-spin" size={18} /> : <Save size={18} />}
                 Update Status
@@ -412,17 +412,17 @@ export default function OrderDetails({ params }) {
             </div>
 
             {/* Send Email */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Send Email</h3>
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Send Email</h3>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
                   Email Template
                 </label>
                 <select
                   value={emailTemplate}
                   onChange={(e) => setEmailTemplate(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] focus:border-transparent"
                 >
                   <option value="confirmation">Confirmation</option>
                   <option value="statusUpdate">Status Update</option>
@@ -435,7 +435,7 @@ export default function OrderDetails({ params }) {
               <button
                 onClick={handleSendEmail}
                 disabled={sendingEmail}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="w-full flex items-center justify-center gap-2 px-3 md:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm md:text-base"
               >
                 {sendingEmail ? <Loader className="animate-spin" size={18} /> : <Send size={18} />}
                 Send Email
@@ -443,27 +443,27 @@ export default function OrderDetails({ params }) {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
 
               <div className="space-y-2">
                 {canCancelOrder(order.status) && (
-                  <button className="w-full px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition text-sm font-medium">
+                  <button className="w-full px-3 md:px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition text-xs md:text-sm font-medium">
                     Cancel Order
                   </button>
                 )}
 
                 {canRefundOrder(order.paymentStatus) && (
-                  <button className="w-full px-4 py-2 border border-orange-300 text-orange-600 rounded-lg hover:bg-orange-50 transition text-sm font-medium">
+                  <button className="w-full px-3 md:px-4 py-2 border border-orange-300 text-orange-600 rounded-lg hover:bg-orange-50 transition text-xs md:text-sm font-medium">
                     Refund Payment
                   </button>
                 )}
 
-                <button className="w-full px-4 py-2 border border-blue-300 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm font-medium">
+                <button className="w-full px-3 md:px-4 py-2 border border-[#7b3306] text-[#7b3306] rounded-lg hover:bg-[#7b3306] hover:text-white transition text-xs md:text-sm font-medium">
                   Print Order
                 </button>
 
-                <button className="w-full px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition text-sm font-medium">
+                <button className="w-full px-3 md:px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition text-xs md:text-sm font-medium">
                   Download Invoice
                 </button>
               </div>

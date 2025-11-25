@@ -129,7 +129,7 @@ export default function CouponDetails({ params }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-0 lg:p-8">
       <div className="max-w-2xl mx-auto">
         <Link
           href="/dashboard/coupon"
@@ -343,7 +343,7 @@ export default function CouponDetails({ params }) {
           </div>
 
           {/* Submit Buttons */}
-          <div className="border-t pt-6 flex gap-4">
+          <div className="border-t pt-6 flex flex-col sm:flex-row gap-4">
             <button
               type="submit"
               disabled={submitting}
@@ -354,7 +354,7 @@ export default function CouponDetails({ params }) {
             <button
               type="button"
               onClick={() => setShowDeleteConfirm(true)}
-              className="px-4 py-3 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition font-semibold flex items-center gap-2"
+              className="px-4 py-3 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition font-semibold flex justify-center items-center gap-2"
             >
               <Trash2 size={18} />
               Delete

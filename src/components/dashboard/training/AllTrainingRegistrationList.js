@@ -144,34 +144,34 @@ export default function AllTrainingRegistrationList() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 py-4 md:py-8 px-0 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Training Registrations</h1>
-        <p className="text-gray-600">Manage and track all training registrations</p>
+      <div className="max-w-7xl mx-auto mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">Training Registrations</h1>
+        <p className="text-sm md:text-base text-gray-600">Manage and track all training registrations</p>
       </div>
 
       {/* Statistics */}
       {stats && (
-        <div className="max-w-7xl mx-auto mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-600">
-            <h3 className="text-gray-500 text-sm font-semibold mb-2">Total Registrations</h3>
-            <p className="text-3xl font-bold text-amber-600">{stats.totalRegistrations}</p>
+        <div className="max-w-7xl mx-auto mb-6 md:mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="bg-white rounded-lg shadow-md p-4 md:p-6 border-l-4 border-amber-600">
+            <h3 className="text-gray-500 text-xs md:text-sm font-semibold mb-2">Total Registrations</h3>
+            <p className="text-2xl md:text-3xl font-bold text-amber-600">{stats.totalRegistrations}</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-600">
-            <h3 className="text-gray-500 text-sm font-semibold mb-2">Paid Registrations</h3>
-            <p className="text-3xl font-bold text-green-600">{stats.byPaymentStatus.paid || 0}</p>
+          <div className="bg-white rounded-lg shadow-md p-4 md:p-6 border-l-4 border-green-600">
+            <h3 className="text-gray-500 text-xs md:text-sm font-semibold mb-2">Paid Registrations</h3>
+            <p className="text-2xl md:text-3xl font-bold text-green-600">{stats.byPaymentStatus.paid || 0}</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
-            <h3 className="text-gray-500 text-sm font-semibold mb-2">Confirmed</h3>
-            <p className="text-3xl font-bold text-blue-600">{stats.byStatus.confirmed || 0}</p>
+          <div className="bg-white rounded-lg shadow-md p-4 md:p-6 border-l-4 border-blue-600">
+            <h3 className="text-gray-500 text-xs md:text-sm font-semibold mb-2">Confirmed</h3>
+            <p className="text-2xl md:text-3xl font-bold text-blue-600">{stats.byStatus.confirmed || 0}</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-600">
-            <h3 className="text-gray-500 text-sm font-semibold mb-2">Total Revenue</h3>
-            <p className="text-3xl font-bold text-purple-600">
+          <div className="bg-white rounded-lg shadow-md p-4 md:p-6 border-l-4 border-purple-600">
+            <h3 className="text-gray-500 text-xs md:text-sm font-semibold mb-2">Total Revenue</h3>
+            <p className="text-2xl md:text-3xl font-bold text-purple-600">
               ₦{(stats.revenue?.totalRevenue / 1000000).toFixed(1)}M
             </p>
           </div>
@@ -179,20 +179,20 @@ export default function AllTrainingRegistrationList() {
       )}
 
       {/* Filters and Actions */}
-      <div className="max-w-7xl mx-auto mb-6 bg-white rounded-lg shadow-md p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <div className="max-w-7xl mx-auto mb-4 md:mb-6 bg-white rounded-lg shadow-md p-3 md:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
           {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+          <div className="relative sm:col-span-2 lg:col-span-1">
+            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
             <input
               type="text"
-              placeholder="Search by name, email, phone..."
+              placeholder="Search name..."
               value={searchTerm}
               onChange={e => {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -203,7 +203,7 @@ export default function AllTrainingRegistrationList() {
               setStatusFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white"
+            className="px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white"
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -220,7 +220,7 @@ export default function AllTrainingRegistrationList() {
               setSessionFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white"
+            className="px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none bg-white"
           >
             <option value="">All Sessions</option>
             <option value="december">December 2025</option>
@@ -232,35 +232,37 @@ export default function AllTrainingRegistrationList() {
           {/* Export Button */}
           <button
             onClick={handleExport}
-            className="flex items-center justify-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition"
+            className="flex items-center justify-center gap-2 bg-amber-600 text-white px-3 md:px-4 py-2 text-sm md:text-base rounded-lg hover:bg-amber-700 transition w-full sm:col-span-2 lg:col-span-1 lg:w-auto"
           >
-            <Download size={20} />
-            Export CSV
+            <Download size={18} />
+            <span className="hidden sm:inline">Export CSV</span>
+            <span className="sm:hidden">Export</span>
           </button>
         </div>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="max-w-7xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
-          <AlertCircle className="text-red-600" size={24} />
-          <p className="text-red-800">{error}</p>
+        <div className="max-w-7xl mx-auto mb-4 md:mb-6 p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+          <AlertCircle className="text-red-600 shrink-0" size={20} />
+          <p className="text-red-800 text-sm md:text-base">{error}</p>
         </div>
       )}
 
       {/* Table */}
       <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         {loading ? (
-          <div className="flex items-center justify-center py-12">
+          <div className="flex items-center justify-center py-8 md:py-12">
             <Loader className="animate-spin text-amber-600" size={32} />
           </div>
         ) : registrations.length === 0 ? (
-          <div className="p-8 text-center text-gray-600">
-            <p className="text-lg">No registrations found</p>
+          <div className="p-6 md:p-8 text-center text-gray-600">
+            <p className="text-base md:text-lg">No registrations found</p>
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
@@ -357,10 +359,86 @@ export default function AllTrainingRegistrationList() {
               </table>
             </div>
 
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-3 p-4">
+              {registrations.map((reg) => (
+                <div key={reg._id} className="bg-white border border-gray-200 rounded-lg p-4">
+                  {/* Header with Name and Status */}
+                  <div className="flex justify-between items-start gap-2 mb-3">
+                    <div>
+                      <p className="text-xs text-gray-600 mb-1">Name</p>
+                      <p className="font-bold text-gray-900">{reg.firstName} {reg.lastName}</p>
+                      <p className="text-xs text-gray-600 mt-1">{reg.experience}</p>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getStatusColor(
+                        reg.status
+                      )}`}
+                    >
+                      {reg.status}
+                    </span>
+                  </div>
+
+                  {/* Contact Info */}
+                  <div className="border-t pt-3 mb-3">
+                    <div className="mb-2">
+                      <p className="text-xs text-gray-600">Email</p>
+                      <p className="text-sm text-gray-900 break-all">{reg.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Phone</p>
+                      <p className="text-sm text-gray-900">{reg.phone}</p>
+                    </div>
+                  </div>
+
+                  {/* Session and Payment */}
+                  <div className="grid grid-cols-2 gap-3 border-t pt-3 mb-4">
+                    <div>
+                      <p className="text-xs text-gray-600">Session</p>
+                      <p className="text-sm text-gray-900 capitalize">{reg.sessionDate}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Payment</p>
+                      <span
+                        className={`inline-block px-2 py-1 rounded text-xs font-semibold ${getPaymentColor(
+                          reg.paymentStatus
+                        )}`}
+                      >
+                        {reg.paymentStatus}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-2 pt-3 border-t">
+                    <Link
+                      href={`/dashboard/training-registration/${reg._id}`}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition text-sm font-medium"
+                    >
+                      <Eye size={16} />
+                      View
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(reg._id)}
+                      disabled={deleting === reg._id}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition text-sm font-medium disabled:opacity-50"
+                    >
+                      {deleting === reg._id ? (
+                        <Loader className="animate-spin" size={16} />
+                      ) : (
+                        <Trash2 size={16} />
+                      )}
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                <div className="text-sm text-gray-600">
+              <div className="px-4 md:px-6 py-3 md:py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="text-xs md:text-sm text-gray-600">
                   Page {currentPage} of {totalPages}
                 </div>
                 <div className="flex items-center gap-2">
@@ -369,14 +447,14 @@ export default function AllTrainingRegistrationList() {
                     disabled={currentPage === 1}
                     className="p-2 text-gray-600 hover:bg-gray-200 rounded-lg transition disabled:opacity-50"
                   >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={18} />
                   </button>
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
                     className="p-2 text-gray-600 hover:bg-gray-200 rounded-lg transition disabled:opacity-50"
                   >
-                    <ChevronRight size={20} />
+                    <ChevronRight size={18} />
                   </button>
                 </div>
               </div>

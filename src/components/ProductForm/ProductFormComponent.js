@@ -320,27 +320,27 @@ const ProductFormComponent = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">
+    <div className="bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
         {isEditing ? 'Edit Product' : 'Add New Product'}
       </h1>
-      <p className="text-gray-600 mb-8">
+      <p className="text-sm md:text-base text-gray-600 mb-6 md:mb-8">
         {isEditing
           ? 'Update product details and information'
           : 'Create a new product with complete details'}
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
         {/* Basic Information */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Basic Information
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {/* Product Name */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
                 Product Name *
               </label>
               <input
@@ -350,23 +350,23 @@ const ProductFormComponent = ({
                 onChange={handleInputChange}
                 onBlur={generateSlug}
                 placeholder="Enter product name"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
                   errors.name
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
                 }`}
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={16} /> {errors.name}
+                <p className="text-red-500 text-xs md:text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={14} /> {errors.name}
                 </p>
               )}
             </div>
 
             {/* Slug */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                URL Slug * <span className='text-sm'>(auto-generated from product name)</span>
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
+                URL Slug * <span className='text-xs md:text-sm'>(auto-generated)</span>
               </label>
               <input
                 type="text"
@@ -375,20 +375,20 @@ const ProductFormComponent = ({
                 onChange={handleInputChange}
                 readOnly
                 placeholder="auto-generated-from-name"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
                   errors.slug
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
                 }`}
               />
               {errors.slug && (
-                <p className="text-red-500 text-sm mt-1">Auto-generated slug</p>
+                <p className="text-red-500 text-xs md:text-sm mt-1">Auto-generated slug</p>
               )}
             </div>
 
             {/* Category */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
                 Category *
               </label>
               <select
@@ -396,13 +396,13 @@ const ProductFormComponent = ({
                 value={formData.category}
                 onChange={handleInputChange}
                 disabled={loadingCategories}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
                   errors.category
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
                 } ${loadingCategories ? 'bg-gray-100' : ''}`}
               >
-                <option value="">{loadingCategories ? 'Loading categories...' : 'Select Category'}</option>
+                <option value="">{loadingCategories ? 'Loading...' : 'Select Category'}</option>
                 {categories.map((cat) => (
                   <option key={cat._id} value={cat.name}>
                     {cat.name}
@@ -410,15 +410,15 @@ const ProductFormComponent = ({
                 ))}
               </select>
               {errors.category && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={16} /> {errors.category}
+                <p className="text-red-500 text-xs md:text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={14} /> {errors.category}
                 </p>
               )}
             </div>
 
             {/* Subcategory */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
                 Subcategory
               </label>
               <input
@@ -427,13 +427,13 @@ const ProductFormComponent = ({
                 value={formData.subcategory}
                 onChange={handleInputChange}
                 placeholder="Enter subcategory"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               />
             </div>
 
             {/* Brand */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
                 Brand
               </label>
               <input
@@ -442,13 +442,13 @@ const ProductFormComponent = ({
                 value={formData.brand}
                 onChange={handleInputChange}
                 placeholder="Enter brand name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               />
             </div>
 
             {/* SKU */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
                 SKU
               </label>
               <input
@@ -457,14 +457,14 @@ const ProductFormComponent = ({
                 value={formData.sku}
                 onChange={handleInputChange}
                 placeholder="Stock Keeping Unit"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               />
             </div>
           </div>
 
           {/* Short Description */}
           <div className="mt-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
               Short Description
             </label>
             <input
@@ -474,16 +474,16 @@ const ProductFormComponent = ({
               onChange={handleInputChange}
               placeholder="Brief product summary (max 160 characters)"
               maxLength={160}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
             />
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-xs md:text-sm text-gray-500 mt-1">
               {formData.shortDescription.length}/160 characters
             </p>
           </div>
 
           {/* Description */}
           <div className="mt-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
               Full Description *
             </label>
             <textarea
@@ -492,30 +492,30 @@ const ProductFormComponent = ({
               onChange={handleInputChange}
               placeholder="Enter detailed product description"
               rows={6}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition resize-none ${
+              className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition resize-none ${
                 errors.description
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300'
               }`}
             />
             {errors.description && (
-              <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                <AlertCircle size={16} /> {errors.description}
+              <p className="text-red-500 text-xs md:text-sm mt-1 flex items-center gap-1">
+                <AlertCircle size={14} /> {errors.description}
               </p>
             )}
           </div>
         </div>
 
         {/* Pricing Information */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Pricing
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {/* Base Price */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Base Price *
               </label>
               <div className="relative">
@@ -527,7 +527,7 @@ const ProductFormComponent = ({
                   onChange={handlePriceChange}
                   placeholder="0.00"
                   step="0.01"
-                  className={`w-full pl-8 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                  className={`w-full pl-8 pr-3 md:pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm ${
                     errors.basePrice
                       ? 'border-red-500 focus:ring-red-500'
                       : 'border-gray-300'
@@ -535,15 +535,15 @@ const ProductFormComponent = ({
                 />
               </div>
               {errors.basePrice && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={16} /> {errors.basePrice}
+                <p className="text-red-500 text-xs md:text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={14} /> {errors.basePrice}
                 </p>
               )}
             </div>
 
             {/* Sale Price */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Sale Price
               </label>
               <div className="relative">
@@ -555,14 +555,14 @@ const ProductFormComponent = ({
                   onChange={handlePriceChange}
                   placeholder="0.00"
                   step="0.01"
-                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="w-full pl-8 pr-3 md:pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
                 />
               </div>
             </div>
 
             {/* Discount Percent */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Discount %
               </label>
               <div className="relative">
@@ -572,7 +572,7 @@ const ProductFormComponent = ({
                   value={formData.discountPercent}
                   onChange={handleInputChange}
                   placeholder="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
                   disabled
                 />
                 <span className="absolute right-3 top-2 text-gray-500">%</span>
@@ -583,15 +583,15 @@ const ProductFormComponent = ({
         </div>
 
         {/* Stock Information */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Inventory
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {/* Stock */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Stock Quantity *
               </label>
               <input
@@ -600,22 +600,22 @@ const ProductFormComponent = ({
                 value={formData.stock}
                 onChange={handleInputChange}
                 placeholder="0"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm ${
                   errors.stock
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
                 }`}
               />
               {errors.stock && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={16} /> {errors.stock}
+                <p className="text-red-500 text-xs md:text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={14} /> {errors.stock}
                 </p>
               )}
             </div>
 
             {/* Low Stock Threshold */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Low Stock Alert
               </label>
               <input
@@ -624,13 +624,13 @@ const ProductFormComponent = ({
                 value={formData.lowStockThreshold}
                 onChange={handleInputChange}
                 placeholder="5"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
             </div>
 
             {/* Barcode */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Barcode
               </label>
               <input
@@ -639,22 +639,22 @@ const ProductFormComponent = ({
                 value={formData.barcode}
                 onChange={handleInputChange}
                 placeholder="Optional barcode"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
             </div>
           </div>
         </div>
 
         {/* Weight & Dimensions */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Weight & Dimensions
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
             {/* Weight */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Weight
               </label>
               <div className="flex gap-2">
@@ -666,14 +666,14 @@ const ProductFormComponent = ({
                   }
                   placeholder="0.00"
                   step="0.01"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
                 />
                 <select
                   value={formData.weight.unit}
                   onChange={(e) =>
                     handleNestedChange('weight', 'unit', e.target.value)
                   }
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="px-2 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
                 >
                   <option value="kg">kg</option>
                   <option value="g">g</option>
@@ -684,7 +684,7 @@ const ProductFormComponent = ({
 
             {/* Dimensions */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Dimensions (L × W × H)
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -696,7 +696,7 @@ const ProductFormComponent = ({
                   }
                   placeholder="Length"
                   step="0.01"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-xs md:text-sm"
                 />
                 <input
                   type="number"
@@ -706,7 +706,7 @@ const ProductFormComponent = ({
                   }
                   placeholder="Width"
                   step="0.01"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-xs md:text-sm"
                 />
                 <input
                   type="number"
@@ -716,7 +716,7 @@ const ProductFormComponent = ({
                   }
                   placeholder="Height"
                   step="0.01"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-xs md:text-sm"
                 />
               </div>
               <select
@@ -724,7 +724,7 @@ const ProductFormComponent = ({
                 onChange={(e) =>
                   handleNestedChange('dimensions', 'unit', e.target.value)
                 }
-                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="mt-2 w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               >
                 <option value="cm">cm</option>
                 <option value="in">in</option>
@@ -735,13 +735,13 @@ const ProductFormComponent = ({
         </div>
 
         {/* Attributes */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Attributes
           </h2>
 
           <div className="space-y-4">
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={attributeInput.name}
@@ -749,7 +749,7 @@ const ProductFormComponent = ({
                   setAttributeInput({ ...attributeInput, name: e.target.value })
                 }
                 placeholder="e.g., Size"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
               <input
                 type="text"
@@ -761,14 +761,14 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="e.g., Large"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
               <button
                 type="button"
                 onClick={addAttribute}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center gap-2"
+                className="px-3 md:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center justify-center gap-2 text-sm md:text-base"
               >
-                <Plus size={20} /> Add
+                <Plus size={18} /> Add
               </button>
             </div>
 
@@ -777,7 +777,7 @@ const ProductFormComponent = ({
                 {formData.attributes.map((attr) => (
                   <div
                     key={attr.id}
-                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-sm"
                   >
                     <span className="font-medium text-gray-700">
                       {attr.name}: <span className="text-blue-600">{attr.value}</span>
@@ -787,7 +787,7 @@ const ProductFormComponent = ({
                       onClick={() => removeAttribute(attr.id)}
                       className="text-red-500 hover:text-red-700 transition"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 ))}
@@ -797,13 +797,13 @@ const ProductFormComponent = ({
         </div>
 
         {/* Delivery Locations */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Delivery Locations
           </h2>
 
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
               <input
                 type="text"
                 value={deliveryInput.locationId}
@@ -814,7 +814,7 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Location ID"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
               <input
                 type="text"
@@ -826,7 +826,7 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Location Name"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
               <input
                 type="number"
@@ -838,7 +838,7 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Shipping Cost"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
               <input
                 type="number"
@@ -850,15 +850,15 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Days"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               />
             </div>
             <button
               type="button"
               onClick={addDeliveryLocation}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center gap-2"
+              className="px-3 md:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base w-full sm:w-auto"
             >
-              <Plus size={20} /> Add Delivery Location
+              <Plus size={18} /> Add Delivery Location
             </button>
 
             {formData.deliveryLocations.length > 0 && (
@@ -866,17 +866,17 @@ const ProductFormComponent = ({
                 {formData.deliveryLocations.map((loc) => (
                   <div
                     key={loc.id}
-                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-xs md:text-sm"
                   >
-                    <span className="text-sm text-gray-700">
+                    <span className="text-gray-700 wrap-break-word flex-1">
                       <strong>{loc.name}</strong> - ₦{loc.shippingCost} ({loc.estimatedDays} days)
                     </span>
                     <button
                       type="button"
                       onClick={() => removeDeliveryLocation(loc.id)}
-                      className="text-red-500 hover:text-red-700 transition"
+                      className="text-red-500 hover:text-red-700 transition shrink-0 ml-2"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 ))}
@@ -886,13 +886,13 @@ const ProductFormComponent = ({
         </div>
 
         {/* Images */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Product Images
           </h2>
 
           <div className="space-y-4">
-            <div className="border-2 border-dashed border-blue-300 rounded-lg p-8 bg-blue-50 hover:border-blue-500 transition cursor-pointer">
+            <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 md:p-8 bg-blue-50 hover:border-blue-500 transition cursor-pointer">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -908,19 +908,19 @@ const ProductFormComponent = ({
               >
                 {uploadingImages ? (
                   <>
-                    <Loader2 className="animate-spin text-blue-600" size={32} />
-                    <span className="text-blue-600 font-medium">
+                    <Loader2 className="animate-spin text-blue-600" size={28} />
+                    <span className="text-blue-600 font-medium text-sm md:text-base">
                       Uploading...
                     </span>
                   </>
                 ) : (
                   <>
-                    <Upload className="text-blue-600" size={32} />
+                    <Upload className="text-blue-600" size={28} />
                     <span className="text-center">
-                      <p className="font-semibold text-gray-900">
+                      <p className="font-semibold text-gray-900 text-sm md:text-base">
                         Click to upload images
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs md:text-sm text-gray-600">
                         or drag and drop (PNG, JPG, GIF up to 5MB)
                       </p>
                     </span>
@@ -931,7 +931,7 @@ const ProductFormComponent = ({
 
             {/* Image Preview Grid */}
             {formData.previewImages.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                 {formData.previewImages.map((image, index) => (
                   <div
                     key={index}
@@ -942,14 +942,14 @@ const ProductFormComponent = ({
                       alt={`Preview ${index}`}
                       width={150}
                       height={150}
-                      className="w-full h-40 object-cover"
+                      className="w-full h-32 md:h-40 object-cover"
                     />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
                       className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition"
                     >
-                      <X className="text-white" size={24} />
+                      <X className="text-white" size={20} />
                     </button>
                   </div>
                 ))}
@@ -959,22 +959,22 @@ const ProductFormComponent = ({
         </div>
 
         {/* Status & Featured */}
-        <div className="border-t pt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="border-t pt-6 md:pt-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
             Visibility & Status
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
             {/* Status */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                 Status
               </label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
@@ -983,15 +983,15 @@ const ProductFormComponent = ({
             </div>
 
             {/* Featured */}
-            <div className="flex items-center gap-3 pt-6">
+            <div className="flex items-center gap-3 pt-2 md:pt-6">
               <input
                 type="checkbox"
                 name="featured"
                 checked={formData.featured}
                 onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 md:w-5 md:h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
               />
-              <label className="text-sm font-semibold text-gray-700 cursor-pointer">
+              <label className="text-xs md:text-sm font-semibold text-gray-700 cursor-pointer">
                 Mark as Featured Product
               </label>
             </div>
@@ -999,12 +999,12 @@ const ProductFormComponent = ({
         </div>
 
         {/* Form Actions */}
-        <div className="border-t pt-8 flex justify-end gap-4">
+        <div className="border-t pt-6 md:pt-8 flex flex-col sm:flex-row justify-end gap-3 md:gap-4">
           {onCancel && (
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
+              className="px-4 md:px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-sm md:text-base"
             >
               Cancel
             </button>
@@ -1012,9 +1012,9 @@ const ProductFormComponent = ({
           <button
             type="submit"
             disabled={isLoading}
-            className="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 md:px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
           >
-            {isLoading && <Loader2 className="animate-spin" size={20} />}
+            {isLoading && <Loader2 className="animate-spin" size={18} />}
             {isEditing ? 'Update Product' : 'Create Product'}
           </button>
         </div>
