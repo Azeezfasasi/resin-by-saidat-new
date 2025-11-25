@@ -1,0 +1,1026 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import {
+  Upload,
+  X,
+  AlertCircle,
+  Loader2,
+  ChevronDown,
+  Plus,
+  Trash2,
+} from 'lucide-react';
+import Image from 'next/image';
+
+const ProductFormComponent = ({
+  initialData = null,
+  onSubmit,
+  isLoading = false,
+  onCancel,
+  isEditing = false,
+}) => {
+  const [formData, setFormData] = useState(
+    initialData ? {
+      name: initialData.name || '',
+      slug: initialData.slug || '',
+      description: initialData.description || '',
+      shortDescription: initialData.shortDescription || '',
+      category: initialData.category || '',
+      subcategory: initialData.subcategory || '',
+      brand: initialData.brand || '',
+      basePrice: initialData.basePrice || '',
+      salePrice: initialData.salePrice || '',
+      discountPercent: initialData.discountPercent || '',
+      stock: initialData.stock || '',
+      lowStockThreshold: initialData.lowStockThreshold || '',
+      sku: initialData.sku || '',
+      barcode: initialData.barcode || '',
+      weight: initialData.weight || { value: '', unit: 'kg' },
+      dimensions: initialData.dimensions || {
+        length: '',
+        width: '',
+        height: '',
+        unit: 'cm',
+      },
+      attributes: initialData.attributes || [],
+      featured: initialData.featured || false,
+      status: initialData.status || 'draft',
+      images: initialData.images || [],
+      previewImages: (initialData.images || []).map(img => ({
+        url: img.url,
+        name: img.alt || 'product image',
+        file: null,
+      })) || [],
+      deliveryLocations: initialData.deliveryLocations || [],
+    } : {
+      name: '',
+      slug: '',
+      description: '',
+      shortDescription: '',
+      category: '',
+      subcategory: '',
+      brand: '',
+      basePrice: '',
+      salePrice: '',
+      discountPercent: '',
+      stock: '',
+      lowStockThreshold: '',
+      sku: '',
+      barcode: '',
+      weight: { value: '', unit: 'kg' },
+      dimensions: {
+        length: '',
+        width: '',
+        height: '',
+        unit: 'cm',
+      },
+      attributes: [],
+      featured: false,
+      status: 'draft',
+      images: [],
+      previewImages: [],
+      deliveryLocations: [],
+    }
+  );
+
+  const [errors, setErrors] = useState({});
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const fileInputRef = useRef(null);
+  const [attributeInput, setAttributeInput] = useState({
+    name: '',
+    value: '',
+  });
+  const [deliveryInput, setDeliveryInput] = useState({
+    locationId: '',
+    name: '',
+    shippingCost: '',
+    estimatedDays: '',
+  });
+
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoadingCategories(true);
+        const response = await fetch('/api/category?limit=100');
+        const data = await response.json();
+        
+        const activeCategories = data.categories
+          .filter(cat => cat.isActive && !cat.deletedAt)
+          .sort((a, b) => a.name.localeCompare(b.name));
+        
+        setCategories(activeCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Handle text input changes
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  // Handle nested object changes
+  const handleNestedChange = (parent, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [parent]: {
+        ...prev[parent],
+        [field]: value,
+      },
+    }));
+  };
+
+  // Auto-calculate discount percent
+  const handlePriceChange = (e) => {
+    const { name, value } = e.target;
+    handleInputChange(e);
+
+    if (name === 'basePrice' || name === 'salePrice') {
+      const basePrice = parseFloat(
+        name === 'basePrice' ? value : formData.basePrice
+      );
+      const salePrice = parseFloat(
+        name === 'salePrice' ? value : formData.salePrice
+      );
+
+      if (basePrice && salePrice && salePrice < basePrice) {
+        const discountPercent = Math.round(
+          ((basePrice - salePrice) / basePrice) * 100
+        );
+        setFormData((prev) => ({
+          ...prev,
+          discountPercent: discountPercent.toString(),
+        }));
+      }
+    }
+  };
+
+  // Handle image upload
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setUploadingImages(true);
+
+    // Preview images immediately
+    const newPreviews = files.map((file) => ({
+      url: URL.createObjectURL(file),
+      name: file.name,
+      file,
+    }));
+
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+      previewImages: [...prev.previewImages, ...newPreviews],
+    }));
+
+    setUploadingImages(false);
+    fileInputRef.current.value = '';
+  };
+
+  // Remove image
+  const removeImage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      previewImages: prev.previewImages.filter((_, i) => i !== index),
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Add attribute
+  const addAttribute = () => {
+    if (attributeInput.name && attributeInput.value) {
+      setFormData((prev) => ({
+        ...prev,
+        attributes: [
+          ...prev.attributes,
+          { ...attributeInput, id: Date.now() },
+        ],
+      }));
+      setAttributeInput({ name: '', value: '' });
+    }
+  };
+
+  // Remove attribute
+  const removeAttribute = (id) => {
+    setFormData((prev) => ({
+      ...prev,
+      attributes: prev.attributes.filter((attr) => attr.id !== id),
+    }));
+  };
+
+  // Add delivery location
+  const addDeliveryLocation = () => {
+    if (
+      deliveryInput.locationId &&
+      deliveryInput.name &&
+      deliveryInput.shippingCost
+    ) {
+      setFormData((prev) => ({
+        ...prev,
+        deliveryLocations: [
+          ...prev.deliveryLocations,
+          { ...deliveryInput, id: Date.now() },
+        ],
+      }));
+      setDeliveryInput({
+        locationId: '',
+        name: '',
+        shippingCost: '',
+        estimatedDays: '',
+      });
+    }
+  };
+
+  // Remove delivery location
+  const removeDeliveryLocation = (id) => {
+    setFormData((prev) => ({
+      ...prev,
+      deliveryLocations: prev.deliveryLocations.filter((loc) => loc.id !== id),
+    }));
+  };
+
+  // Generate slug from name
+  const generateSlug = () => {
+    const slug = formData.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    setFormData((prev) => ({
+      ...prev,
+      slug,
+    }));
+  };
+
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = 'Product name is required';
+    if (!formData.slug.trim()) newErrors.slug = 'Slug is required';
+    if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.description.trim())
+      newErrors.description = 'Description is required';
+    if (!formData.basePrice) newErrors.basePrice = 'Base price is required';
+    if (!formData.stock) newErrors.stock = 'Stock quantity is required';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    // Prepare form data with images
+    const submitData = new FormData();
+
+    // Add text fields
+    Object.keys(formData).forEach((key) => {
+      if (key !== 'images' && key !== 'previewImages') {
+        if (typeof formData[key] === 'object') {
+          submitData.append(key, JSON.stringify(formData[key]));
+        } else {
+          submitData.append(key, formData[key]);
+        }
+      }
+    });
+
+    // Add images
+    formData.images.forEach((image) => {
+      if (image instanceof File) {
+        submitData.append('images', image);
+      }
+    });
+
+    await onSubmit(submitData);
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        {isEditing ? 'Edit Product' : 'Add New Product'}
+      </h1>
+      <p className="text-gray-600 mb-8">
+        {isEditing
+          ? 'Update product details and information'
+          : 'Create a new product with complete details'}
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Basic Information */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Basic Information
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Product Name */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Product Name *
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                onBlur={generateSlug}
+                placeholder="Enter product name"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                  errors.name
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300'
+                }`}
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={16} /> {errors.name}
+                </p>
+              )}
+            </div>
+
+            {/* Slug */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                URL Slug * <span className='text-sm'>(auto-generated from product name)</span>
+              </label>
+              <input
+                type="text"
+                name="slug"
+                value={formData.slug}
+                onChange={handleInputChange}
+                readOnly
+                placeholder="auto-generated-from-name"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                  errors.slug
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300'
+                }`}
+              />
+              {errors.slug && (
+                <p className="text-red-500 text-sm mt-1">Auto-generated slug</p>
+              )}
+            </div>
+
+            {/* Category */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Category *
+              </label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                disabled={loadingCategories}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                  errors.category
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300'
+                } ${loadingCategories ? 'bg-gray-100' : ''}`}
+              >
+                <option value="">{loadingCategories ? 'Loading categories...' : 'Select Category'}</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              {errors.category && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={16} /> {errors.category}
+                </p>
+              )}
+            </div>
+
+            {/* Subcategory */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Subcategory
+              </label>
+              <input
+                type="text"
+                name="subcategory"
+                value={formData.subcategory}
+                onChange={handleInputChange}
+                placeholder="Enter subcategory"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+
+            {/* Brand */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Brand
+              </label>
+              <input
+                type="text"
+                name="brand"
+                value={formData.brand}
+                onChange={handleInputChange}
+                placeholder="Enter brand name"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+
+            {/* SKU */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                SKU
+              </label>
+              <input
+                type="text"
+                name="sku"
+                value={formData.sku}
+                onChange={handleInputChange}
+                placeholder="Stock Keeping Unit"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+          </div>
+
+          {/* Short Description */}
+          <div className="mt-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Short Description
+            </label>
+            <input
+              type="text"
+              name="shortDescription"
+              value={formData.shortDescription}
+              onChange={handleInputChange}
+              placeholder="Brief product summary (max 160 characters)"
+              maxLength={160}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              {formData.shortDescription.length}/160 characters
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="mt-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Full Description *
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="Enter detailed product description"
+              rows={6}
+              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition resize-none ${
+                errors.description
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300'
+              }`}
+            />
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                <AlertCircle size={16} /> {errors.description}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Pricing Information */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Pricing
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Base Price */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Base Price *
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-gray-500">₦</span>
+                <input
+                  type="number"
+                  name="basePrice"
+                  value={formData.basePrice}
+                  onChange={handlePriceChange}
+                  placeholder="0.00"
+                  step="0.01"
+                  className={`w-full pl-8 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                    errors.basePrice
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300'
+                  }`}
+                />
+              </div>
+              {errors.basePrice && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={16} /> {errors.basePrice}
+                </p>
+              )}
+            </div>
+
+            {/* Sale Price */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Sale Price
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-gray-500">₦</span>
+                <input
+                  type="number"
+                  name="salePrice"
+                  value={formData.salePrice}
+                  onChange={handlePriceChange}
+                  placeholder="0.00"
+                  step="0.01"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                />
+              </div>
+            </div>
+
+            {/* Discount Percent */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Discount %
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="discountPercent"
+                  value={formData.discountPercent}
+                  onChange={handleInputChange}
+                  placeholder="0"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  disabled
+                />
+                <span className="absolute right-3 top-2 text-gray-500">%</span>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Auto-calculated</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stock Information */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Inventory
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Stock */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Stock Quantity *
+              </label>
+              <input
+                type="number"
+                name="stock"
+                value={formData.stock}
+                onChange={handleInputChange}
+                placeholder="0"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                  errors.stock
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300'
+                }`}
+              />
+              {errors.stock && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle size={16} /> {errors.stock}
+                </p>
+              )}
+            </div>
+
+            {/* Low Stock Threshold */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Low Stock Alert
+              </label>
+              <input
+                type="number"
+                name="lowStockThreshold"
+                value={formData.lowStockThreshold}
+                onChange={handleInputChange}
+                placeholder="5"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+
+            {/* Barcode */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Barcode
+              </label>
+              <input
+                type="text"
+                name="barcode"
+                value={formData.barcode}
+                onChange={handleInputChange}
+                placeholder="Optional barcode"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Weight & Dimensions */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Weight & Dimensions
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Weight */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Weight
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  value={formData.weight.value}
+                  onChange={(e) =>
+                    handleNestedChange('weight', 'value', e.target.value)
+                  }
+                  placeholder="0.00"
+                  step="0.01"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                />
+                <select
+                  value={formData.weight.unit}
+                  onChange={(e) =>
+                    handleNestedChange('weight', 'unit', e.target.value)
+                  }
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                >
+                  <option value="kg">kg</option>
+                  <option value="g">g</option>
+                  <option value="lb">lb</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Dimensions */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Dimensions (L × W × H)
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                <input
+                  type="number"
+                  value={formData.dimensions.length}
+                  onChange={(e) =>
+                    handleNestedChange('dimensions', 'length', e.target.value)
+                  }
+                  placeholder="Length"
+                  step="0.01"
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                />
+                <input
+                  type="number"
+                  value={formData.dimensions.width}
+                  onChange={(e) =>
+                    handleNestedChange('dimensions', 'width', e.target.value)
+                  }
+                  placeholder="Width"
+                  step="0.01"
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                />
+                <input
+                  type="number"
+                  value={formData.dimensions.height}
+                  onChange={(e) =>
+                    handleNestedChange('dimensions', 'height', e.target.value)
+                  }
+                  placeholder="Height"
+                  step="0.01"
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                />
+              </div>
+              <select
+                value={formData.dimensions.unit}
+                onChange={(e) =>
+                  handleNestedChange('dimensions', 'unit', e.target.value)
+                }
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              >
+                <option value="cm">cm</option>
+                <option value="in">in</option>
+                <option value="m">m</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Attributes */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Attributes
+          </h2>
+
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={attributeInput.name}
+                onChange={(e) =>
+                  setAttributeInput({ ...attributeInput, name: e.target.value })
+                }
+                placeholder="e.g., Size"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+              <input
+                type="text"
+                value={attributeInput.value}
+                onChange={(e) =>
+                  setAttributeInput({
+                    ...attributeInput,
+                    value: e.target.value,
+                  })
+                }
+                placeholder="e.g., Large"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+              <button
+                type="button"
+                onClick={addAttribute}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center gap-2"
+              >
+                <Plus size={20} /> Add
+              </button>
+            </div>
+
+            {formData.attributes.length > 0 && (
+              <div className="space-y-2">
+                {formData.attributes.map((attr) => (
+                  <div
+                    key={attr.id}
+                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                  >
+                    <span className="font-medium text-gray-700">
+                      {attr.name}: <span className="text-blue-600">{attr.value}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeAttribute(attr.id)}
+                      className="text-red-500 hover:text-red-700 transition"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Delivery Locations */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Delivery Locations
+          </h2>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+              <input
+                type="text"
+                value={deliveryInput.locationId}
+                onChange={(e) =>
+                  setDeliveryInput({
+                    ...deliveryInput,
+                    locationId: e.target.value,
+                  })
+                }
+                placeholder="Location ID"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+              <input
+                type="text"
+                value={deliveryInput.name}
+                onChange={(e) =>
+                  setDeliveryInput({
+                    ...deliveryInput,
+                    name: e.target.value,
+                  })
+                }
+                placeholder="Location Name"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+              <input
+                type="number"
+                value={deliveryInput.shippingCost}
+                onChange={(e) =>
+                  setDeliveryInput({
+                    ...deliveryInput,
+                    shippingCost: e.target.value,
+                  })
+                }
+                placeholder="Shipping Cost"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+              <input
+                type="number"
+                value={deliveryInput.estimatedDays}
+                onChange={(e) =>
+                  setDeliveryInput({
+                    ...deliveryInput,
+                    estimatedDays: e.target.value,
+                  })
+                }
+                placeholder="Days"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={addDeliveryLocation}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center gap-2"
+            >
+              <Plus size={20} /> Add Delivery Location
+            </button>
+
+            {formData.deliveryLocations.length > 0 && (
+              <div className="space-y-2">
+                {formData.deliveryLocations.map((loc) => (
+                  <div
+                    key={loc.id}
+                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                  >
+                    <span className="text-sm text-gray-700">
+                      <strong>{loc.name}</strong> - ₦{loc.shippingCost} ({loc.estimatedDays} days)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeDeliveryLocation(loc.id)}
+                      className="text-red-500 hover:text-red-700 transition"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Images */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Product Images
+          </h2>
+
+          <div className="space-y-4">
+            <div className="border-2 border-dashed border-blue-300 rounded-lg p-8 bg-blue-50 hover:border-blue-500 transition cursor-pointer">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full flex flex-col items-center justify-center gap-3"
+              >
+                {uploadingImages ? (
+                  <>
+                    <Loader2 className="animate-spin text-blue-600" size={32} />
+                    <span className="text-blue-600 font-medium">
+                      Uploading...
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="text-blue-600" size={32} />
+                    <span className="text-center">
+                      <p className="font-semibold text-gray-900">
+                        Click to upload images
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        or drag and drop (PNG, JPG, GIF up to 5MB)
+                      </p>
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Image Preview Grid */}
+            {formData.previewImages.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {formData.previewImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative group rounded-lg overflow-hidden bg-gray-100"
+                  >
+                    <Image
+                      src={image.url}
+                      alt={`Preview ${index}`}
+                      width={150}
+                      height={150}
+                      className="w-full h-40 object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition"
+                    >
+                      <X className="text-white" size={24} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Status & Featured */}
+        <div className="border-t pt-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Visibility & Status
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Status
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="scheduled">Scheduled</option>
+              </select>
+            </div>
+
+            {/* Featured */}
+            <div className="flex items-center gap-3 pt-6">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={formData.featured}
+                onChange={handleInputChange}
+                className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              />
+              <label className="text-sm font-semibold text-gray-700 cursor-pointer">
+                Mark as Featured Product
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Form Actions */}
+        <div className="border-t pt-8 flex justify-end gap-4">
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
+            >
+              Cancel
+            </button>
+          )}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading && <Loader2 className="animate-spin" size={20} />}
+            {isEditing ? 'Update Product' : 'Create Product'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default ProductFormComponent;
