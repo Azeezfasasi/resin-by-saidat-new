@@ -133,7 +133,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
 
   // Desktop / large screens: persistent sidebar
   const desktopNav = (
-    <nav className={`hidden md:flex h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
+    <nav className={`hidden md:flex h-full bg-[#7b3306] border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
       <div className="h-full overflow-y-auto py-6 px-2">
         <ul className="space-y-1">
           {items.map(i => {
@@ -147,7 +147,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                   <div>
                     <button
                       onClick={() => toggleSub(i.href)}
-                      className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-indigo-600' : 'text-white hover:bg-blue-800'}`}
+                      className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-blue-800'}`}
                     >
                       <span className="flex justify-start items-center gap-2">
                         <span className="shrink-0"> <Icon name={i.icon} /> </span>
@@ -165,7 +165,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                       <ul className="mt-1 space-y-1 pl-10">
                         {i.children.map(c => (
                           <li key={c.href}>
-                            <Link href={c.href} className={`block px-3 py-2 rounded-md text-sm ${pathname === c.href ? 'bg-indigo-50 text-indigo-600' : 'text-white hover:bg-blue-600'}`}>
+                            <Link href={c.href} className={`block px-3 py-2 rounded-md text-sm ${pathname === c.href ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-blue-600'}`}>
                               {c.label}
                             </Link>
                           </li>
@@ -174,7 +174,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                     )}
                   </div>
                 ) : (
-                  <Link href={i.href} className={`flex items-center gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-indigo-600' : 'text-white hover:bg-blue-800'}`}>
+                  <Link href={i.href} className={`flex items-center gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-blue-800'}`}>
                     <span className="shrink-0"> <Icon name={i.icon} /> </span>
                     {!collapsed && <span className="text-sm font-medium">{i.label}</span>}
                   </Link>
@@ -192,13 +192,13 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black/40" onClick={onClose} />
 
-      <nav className="relative z-50 h-full w-70 bg-blue-900 border-r border-gray-100">
+      <nav className="relative z-50 h-full w-70 bg-[#7b3306] border-r border-gray-100">
         <div className="h-full overflow-y-auto py-6 px-4">
           <div className="flex items-center justify-between mb-6">
-            <Link href="/" className="flex flex-col items-center gap-3">
-              <Image src="/images/rayob.svg" alt="Rayob Logo" width={170} height={50} className="w-35 block rounded-md" />
+            <Link href="/" className="flex flex-col items-center gap-3 bg-white p-0 pb-2 rounded-md">
+              <Image src="/images/resinlogo.png" alt="Resin by saidat Logo" width={170} height={50} className="w-35 block rounded-md" />
             </Link>
-            <button aria-label="Close menu" onClick={onClose} className="p-2 rounded-md text-red-600 hover:bg-gray-100">
+            <button aria-label="Close menu" onClick={onClose} className="p-2 rounded-md text-white hover:bg-gray-100">
               <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>

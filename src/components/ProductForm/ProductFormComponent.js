@@ -350,7 +350,7 @@ const ProductFormComponent = ({
                 onChange={handleInputChange}
                 onBlur={generateSlug}
                 placeholder="Enter product name"
-                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition ${
                   errors.name
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
@@ -375,7 +375,7 @@ const ProductFormComponent = ({
                 onChange={handleInputChange}
                 readOnly
                 placeholder="auto-generated-from-name"
-                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition ${
                   errors.slug
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
@@ -396,7 +396,7 @@ const ProductFormComponent = ({
                 value={formData.category}
                 onChange={handleInputChange}
                 disabled={loadingCategories}
-                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
+                className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition ${
                   errors.category
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
@@ -427,7 +427,7 @@ const ProductFormComponent = ({
                 value={formData.subcategory}
                 onChange={handleInputChange}
                 placeholder="Enter subcategory"
-                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition"
               />
             </div>
 
@@ -442,7 +442,7 @@ const ProductFormComponent = ({
                 value={formData.brand}
                 onChange={handleInputChange}
                 placeholder="Enter brand name"
-                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition"
               />
             </div>
 
@@ -457,7 +457,7 @@ const ProductFormComponent = ({
                 value={formData.sku}
                 onChange={handleInputChange}
                 placeholder="Stock Keeping Unit"
-                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition"
               />
             </div>
           </div>
@@ -474,7 +474,7 @@ const ProductFormComponent = ({
               onChange={handleInputChange}
               placeholder="Brief product summary (max 160 characters)"
               maxLength={160}
-              className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition"
             />
             <p className="text-xs md:text-sm text-gray-500 mt-1">
               {formData.shortDescription.length}/160 characters
@@ -492,7 +492,7 @@ const ProductFormComponent = ({
               onChange={handleInputChange}
               placeholder="Enter detailed product description"
               rows={6}
-              className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition resize-none ${
+              className={`w-full px-3 md:px-4 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition resize-none ${
                 errors.description
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300'
@@ -527,7 +527,7 @@ const ProductFormComponent = ({
                   onChange={handlePriceChange}
                   placeholder="0.00"
                   step="0.01"
-                  className={`w-full pl-8 pr-3 md:pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm ${
+                  className={`w-full pl-8 pr-3 md:pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm ${
                     errors.basePrice
                       ? 'border-red-500 focus:ring-red-500'
                       : 'border-gray-300'
@@ -555,7 +555,7 @@ const ProductFormComponent = ({
                   onChange={handlePriceChange}
                   placeholder="0.00"
                   step="0.01"
-                  className="w-full pl-8 pr-3 md:pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                  className="w-full pl-8 pr-3 md:pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
                 />
               </div>
             </div>
@@ -572,7 +572,7 @@ const ProductFormComponent = ({
                   value={formData.discountPercent}
                   onChange={handleInputChange}
                   placeholder="0"
-                  className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                  className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
                   disabled
                 />
                 <span className="absolute right-3 top-2 text-gray-500">%</span>
@@ -600,7 +600,7 @@ const ProductFormComponent = ({
                 value={formData.stock}
                 onChange={handleInputChange}
                 placeholder="0"
-                className={`w-full px-3 md:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm ${
+                className={`w-full px-3 md:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm ${
                   errors.stock
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300'
@@ -624,7 +624,7 @@ const ProductFormComponent = ({
                 value={formData.lowStockThreshold}
                 onChange={handleInputChange}
                 placeholder="5"
-                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
             </div>
 
@@ -639,7 +639,7 @@ const ProductFormComponent = ({
                 value={formData.barcode}
                 onChange={handleInputChange}
                 placeholder="Optional barcode"
-                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
             </div>
           </div>
@@ -666,14 +666,14 @@ const ProductFormComponent = ({
                   }
                   placeholder="0.00"
                   step="0.01"
-                  className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                  className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
                 />
                 <select
                   value={formData.weight.unit}
                   onChange={(e) =>
                     handleNestedChange('weight', 'unit', e.target.value)
                   }
-                  className="px-2 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                  className="px-2 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
                 >
                   <option value="kg">kg</option>
                   <option value="g">g</option>
@@ -696,7 +696,7 @@ const ProductFormComponent = ({
                   }
                   placeholder="Length"
                   step="0.01"
-                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-xs md:text-sm"
+                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-xs md:text-sm"
                 />
                 <input
                   type="number"
@@ -706,7 +706,7 @@ const ProductFormComponent = ({
                   }
                   placeholder="Width"
                   step="0.01"
-                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-xs md:text-sm"
+                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-xs md:text-sm"
                 />
                 <input
                   type="number"
@@ -716,7 +716,7 @@ const ProductFormComponent = ({
                   }
                   placeholder="Height"
                   step="0.01"
-                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-xs md:text-sm"
+                  className="px-2 md:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-xs md:text-sm"
                 />
               </div>
               <select
@@ -724,7 +724,7 @@ const ProductFormComponent = ({
                 onChange={(e) =>
                   handleNestedChange('dimensions', 'unit', e.target.value)
                 }
-                className="mt-2 w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="mt-2 w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               >
                 <option value="cm">cm</option>
                 <option value="in">in</option>
@@ -749,7 +749,7 @@ const ProductFormComponent = ({
                   setAttributeInput({ ...attributeInput, name: e.target.value })
                 }
                 placeholder="e.g., Size"
-                className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
               <input
                 type="text"
@@ -761,12 +761,12 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="e.g., Large"
-                className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
               <button
                 type="button"
                 onClick={addAttribute}
-                className="px-3 md:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center justify-center gap-2 text-sm md:text-base"
+                className="px-3 md:px-4 py-2 bg-[#7b3306] text-white rounded-lg hover:bg-[#4a1e02] transition flex items-center justify-center gap-2 text-sm md:text-base"
               >
                 <Plus size={18} /> Add
               </button>
@@ -780,7 +780,7 @@ const ProductFormComponent = ({
                     className="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-sm"
                   >
                     <span className="font-medium text-gray-700">
-                      {attr.name}: <span className="text-blue-600">{attr.value}</span>
+                      {attr.name}: <span className="text-[#7b3306]">{attr.value}</span>
                     </span>
                     <button
                       type="button"
@@ -814,7 +814,7 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Location ID"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
               <input
                 type="text"
@@ -826,7 +826,7 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Location Name"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
               <input
                 type="number"
@@ -838,7 +838,7 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Shipping Cost"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
               <input
                 type="number"
@@ -850,13 +850,13 @@ const ProductFormComponent = ({
                   })
                 }
                 placeholder="Days"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               />
             </div>
             <button
               type="button"
               onClick={addDeliveryLocation}
-              className="px-3 md:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base w-full sm:w-auto"
+              className="px-3 md:px-4 py-2 bg-[#7b3306] text-white rounded-lg hover:bg-[#4a1e02] transition flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base w-full sm:w-auto"
             >
               <Plus size={18} /> Add Delivery Location
             </button>
@@ -892,7 +892,7 @@ const ProductFormComponent = ({
           </h2>
 
           <div className="space-y-4">
-            <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 md:p-8 bg-blue-50 hover:border-blue-500 transition cursor-pointer">
+            <div className="border-2 border-dashed border-[#7b3306] rounded-lg p-4 md:p-8 bg-[#f7ede2] hover:border-[#7b3306] transition cursor-pointer">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -908,14 +908,14 @@ const ProductFormComponent = ({
               >
                 {uploadingImages ? (
                   <>
-                    <Loader2 className="animate-spin text-blue-600" size={28} />
-                    <span className="text-blue-600 font-medium text-sm md:text-base">
+                    <Loader2 className="animate-spin text-[#7b3306]" size={28} />
+                    <span className="text-[#7b3306] font-medium text-sm md:text-base">
                       Uploading...
                     </span>
                   </>
                 ) : (
                   <>
-                    <Upload className="text-blue-600" size={28} />
+                    <Upload className="text-[#7b3306]" size={28} />
                     <span className="text-center">
                       <p className="font-semibold text-gray-900 text-sm md:text-base">
                         Click to upload images
@@ -974,7 +974,7 @@ const ProductFormComponent = ({
                 name="status"
                 value={formData.status}
                 onChange={handleInputChange}
-                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition text-sm"
+                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
@@ -989,7 +989,7 @@ const ProductFormComponent = ({
                 name="featured"
                 checked={formData.featured}
                 onChange={handleInputChange}
-                className="w-4 h-4 md:w-5 md:h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 md:w-5 md:h-5 text-[#7b3306] rounded focus:ring-2 focus:ring-[#7b3306] cursor-pointer"
               />
               <label className="text-xs md:text-sm font-semibold text-gray-700 cursor-pointer">
                 Mark as Featured Product
@@ -1012,7 +1012,7 @@ const ProductFormComponent = ({
           <button
             type="submit"
             disabled={isLoading}
-            className="px-4 md:px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+            className="px-4 md:px-8 py-2 bg-[#7b3306] text-white rounded-lg hover:bg-[#4a1e02] transition font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
           >
             {isLoading && <Loader2 className="animate-spin" size={18} />}
             {isEditing ? 'Update Product' : 'Create Product'}

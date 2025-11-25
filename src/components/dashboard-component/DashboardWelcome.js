@@ -54,20 +54,20 @@ export default function DashboardWelcome() {
     <section className="bg-white rounded-lg shadow-sm p-5 md:p-6 lg:p-8">
       <div className="flex flex-col lg:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-linear-to-br from-blue-800 to-blue-900 text-white text-xl font-bold">
+          <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-linear-to-br from-[#7b3306] to-[#4a1e02] text-white text-xl font-bold">
             {firstName.charAt(0).toUpperCase()}
           </div>
 
           <div>
             <h1 className="text-lg md:text-2xl font-semibold text-gray-900">
-              {greeting}, <span className="text-blue-900">{firstName}</span>
+              {greeting}, <span className="text-[#7b3306]">{firstName}</span>
             </h1>
             <p className="mt-1 text-sm text-gray-500">{dateStr} • {timeStr}</p>
           </div>
         </div>
 
         <div className="flex flex-col lg:flex-row md:items-center gap-3">
-          <Link href="/dashboard/add-projects" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-blue-900 text-white rounded-md text-sm hover:bg-blue-800 cursor-pointer">
+          <Link href="/dashboard/add-projects" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-[#7b3306] text-white rounded-md text-sm hover:bg-[#4a1e02] cursor-pointer">
             <Briefcase />
             Add Projects
           </Link>

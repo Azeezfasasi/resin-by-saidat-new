@@ -65,7 +65,7 @@ export default function AllCategory() {
           </div>
           <Link
             href="/dashboard/all-category/add"
-            className="flex items-center gap-2 bg-blue-600 text-white px-3 md:px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm md:text-base w-full md:w-auto justify-center md:justify-start"
+            className="flex items-center gap-2 bg-[#7b3306] text-white px-3 md:px-4 py-2 rounded-lg hover:bg-[#4a1e02] transition text-sm md:text-base w-full md:w-auto justify-center md:justify-start"
           >
             <Plus size={18} />
             Add Category
@@ -105,7 +105,7 @@ export default function AllCategory() {
               <p className="text-gray-600 mb-4">No categories found</p>
               <Link
                 href="/dashboard/all-category/add"
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-[#7b3306] hover:text-[#4a1e02] font-medium"
               >
                 Create your first category
               </Link>
@@ -167,7 +167,7 @@ export default function AllCategory() {
                       <div className="flex justify-end gap-2">
                         <Link
                           href={`/dashboard/all-category/${category._id}`}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded transition"
+                          className="p-2 text-[#7b3306] hover:bg-[#f3e6d9] rounded transition"
                         >
                           <Edit size={18} />
                         </Link>
@@ -226,7 +226,7 @@ export default function AllCategory() {
                 <div className="flex gap-2">
                   <Link
                     href={`/dashboard/all-category/${category._id}`}
-                    className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition text-sm"
+                    className="flex-1 flex items-center justify-center gap-2 bg-[#7b3306] text-white px-3 py-2 rounded-lg hover:bg-[#4a1e02] transition text-sm"
                   >
                     <Edit size={16} />
                     Edit
@@ -250,7 +250,7 @@ export default function AllCategory() {
             <p className="text-gray-600 mb-4 text-sm">No categories found</p>
             <Link
               href="/dashboard/all-category/add"
-              className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+              className="text-[#7b3306] hover:text-[#4a1e02] font-medium text-sm"
             >
               Create your first category
             </Link>

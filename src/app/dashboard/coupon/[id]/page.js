@@ -133,7 +133,7 @@ export default function CouponDetails({ params }) {
       <div className="max-w-2xl mx-auto">
         <Link
           href="/dashboard/coupon"
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-6"
+          className="flex items-center gap-2 text-[#7b3306] hover:text-[#4a1e02] font-medium mb-6"
         >
           <ChevronLeft size={20} />
           Back to Coupons
@@ -183,7 +183,7 @@ export default function CouponDetails({ params }) {
                   name="discountType"
                   value={formData.discountType}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 >
                   <option value="percentage">Percentage (%)</option>
                   <option value="fixed">Fixed Amount (₦)</option>
@@ -203,7 +203,7 @@ export default function CouponDetails({ params }) {
                   placeholder="e.g., 20"
                   min="0"
                   step="0.01"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function CouponDetails({ params }) {
                   placeholder="e.g., 5000"
                   min="0"
                   step="0.01"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
             )}
@@ -243,7 +243,7 @@ export default function CouponDetails({ params }) {
                   onChange={handleInputChange}
                   min="0"
                   step="0.01"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
 
@@ -258,7 +258,7 @@ export default function CouponDetails({ params }) {
                   onChange={handleInputChange}
                   placeholder="Leave blank for unlimited"
                   min="1"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
 
@@ -272,7 +272,7 @@ export default function CouponDetails({ params }) {
                   value={formData.usagePerCustomer}
                   onChange={handleInputChange}
                   min="1"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function CouponDetails({ params }) {
                   value={formData.startDate}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
 
@@ -307,7 +307,7 @@ export default function CouponDetails({ params }) {
                   value={formData.endDate}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                 />
               </div>
             </div>
@@ -324,7 +324,7 @@ export default function CouponDetails({ params }) {
               onChange={handleInputChange}
               rows="3"
               placeholder="Internal notes or description for this coupon"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
             />
           </div>
 
@@ -347,7 +347,7 @@ export default function CouponDetails({ params }) {
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold disabled:bg-gray-400"
+              className="flex-1 bg-[#7b3306] text-white py-3 rounded-lg hover:bg-[#4a1e02] transition font-semibold disabled:bg-gray-400"
             >
               {submitting ? 'Updating...' : 'Update Coupon'}
             </button>

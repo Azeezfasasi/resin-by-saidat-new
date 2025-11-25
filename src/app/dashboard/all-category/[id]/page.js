@@ -168,7 +168,7 @@ export default function CategoryDetails({ params }) {
         {/* Header */}
         <Link
           href="/dashboard/all-category"
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-6"
+          className="flex items-center gap-2 text-[#7b3306] hover:text-[#4a1e02] font-medium mb-6"
         >
           <ChevronLeft size={20} />
           Back to Categories
@@ -213,7 +213,7 @@ export default function CategoryDetails({ params }) {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                   placeholder="e.g., Electronics"
                 />
               </div>
@@ -227,7 +227,7 @@ export default function CategoryDetails({ params }) {
                   value={formData.description}
                   onChange={handleInputChange}
                   rows="4"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                   placeholder="Category description..."
                 />
               </div>
@@ -242,7 +242,7 @@ export default function CategoryDetails({ params }) {
                     name="displayOrder"
                     value={formData.displayOrder}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                   />
                 </div>
 
@@ -301,7 +301,7 @@ export default function CategoryDetails({ params }) {
               )}
 
               {/* Upload Input */}
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition cursor-pointer">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#7b3306] transition cursor-pointer">
                 <label htmlFor="image" className="cursor-pointer block">
                   <Upload className="mx-auto text-gray-400 mb-2" size={32} />
                   <p className="text-sm font-medium text-gray-900">Upload image</p>
@@ -333,7 +333,7 @@ export default function CategoryDetails({ params }) {
                   value={formData.metaTitle}
                   onChange={handleInputChange}
                   maxLength="160"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                   placeholder="Meta title for SEO"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -351,7 +351,7 @@ export default function CategoryDetails({ params }) {
                   onChange={handleInputChange}
                   maxLength="160"
                   rows="2"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                   placeholder="Meta description for SEO"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -365,7 +365,7 @@ export default function CategoryDetails({ params }) {
                   <button
                     type="button"
                     onClick={addKeyword}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                    className="text-[#7b3306] hover:text-[#4a1e02] text-sm font-medium"
                   >
                     + Add keyword
                   </button>
@@ -378,7 +378,7 @@ export default function CategoryDetails({ params }) {
                         type="text"
                         value={keyword}
                         onChange={(e) => handleKeywordChange(e, index)}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none"
                         placeholder="Enter keyword"
                       />
                       <button
@@ -400,7 +400,7 @@ export default function CategoryDetails({ params }) {
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold disabled:bg-gray-400"
+              className="flex-1 bg-[#7b3306] text-white py-3 rounded-lg hover:bg-[#4a1e02] transition font-semibold disabled:bg-gray-400"
             >
               {submitting
                 ? 'Saving...'
