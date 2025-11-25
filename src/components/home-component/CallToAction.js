@@ -16,7 +16,7 @@ export default function CallToAction() {
         </div>
 
         {/* Headline */}
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+        <h2 className="text-[25px] md:text-[30px] font-bold mb-4 leading-tight">
           Master the Art of Resin Crafting
         </h2>
 

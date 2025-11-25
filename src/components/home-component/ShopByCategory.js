@@ -60,7 +60,7 @@ export default function ShopByCategory() {
       <section className="py-16 px-4 bg-linear-to-b from-white to-amber-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 mb-4">
+            <h2 className="text-[20px] lg:text-[24px] font-bold text-amber-900 mb-4">
               <span className="flex items-center justify-center gap-2 mb-2">
                 <Sparkles size={32} className="text-amber-600" />
                 Shop by Category
@@ -83,11 +83,11 @@ export default function ShopByCategory() {
   const hasCategories = categories.length > 0;
 
   return (
-    <section className="py-16 px-4 bg-linear-to-b from-white to-amber-50">
+    <section className="py-10 lg:py-16 px-4 bg-linear-to-b from-white to-amber-50">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-amber-900 mb-4">
+          <h2 className="text-[25px] md:text-[30px] font-bold text-amber-900 mb-4">
             <span className="flex items-center justify-center gap-2 mb-2">
               <Sparkles size={32} className="text-amber-600" />
               Shop by Category

@@ -73,7 +73,7 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="you@example.com"
             />
           </div>
@@ -86,30 +86,30 @@ export default function Login() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="Enter your password"
             />
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-3 md:gap-0 items-center justify-between">
             <label className="flex items-center gap-2 text-gray-600">
               <input
                 type="checkbox"
                 name="remember"
                 checked={formData.remember}
                 onChange={handleChange}
-                className="h-4 w-4 rounded border-gray-300 focus:ring-2 focus:ring-blue-900"
+                className="h-4 w-4 rounded border-gray-300 focus:ring-2 focus:ring-[#7b3306]"
               />
               Remember me
             </label>
-            <Link href="/forgot-password" className="text-blue-900 hover:text-blue-800 font-medium">
+            <Link href="/forgot-password" className="text-[#7b3306] hover:text-[#6a2e05] font-medium">
               Forgot password?
             </Link>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold shadow hover:bg-blue-800 transition"
+            className="w-full bg-[#7b3306] text-white py-3 rounded-lg font-semibold shadow hover:bg-[#6a2e05] transition"
             disabled={submitting}
           >
             {submitting ? "Logging in..." : "Login"}
@@ -118,7 +118,7 @@ export default function Login() {
 
         <p className="text-center text-gray-600 mt-6">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-blue-900 hover:text-blue-800 font-medium">
+          <Link href="/register" className="text-[#7b3306] hover:text-[#6a2e05] font-medium">
             Register
           </Link>
         </p>

@@ -116,7 +116,7 @@ export default function ShopComponent() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7b3306] mx-auto mb-4"></div>
           <p className="text-gray-600">Loading products...</p>
         </div>
       </div>
@@ -128,7 +128,7 @@ export default function ShopComponent() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 py-8 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">Shop Products</h1>
+          <h1 className="text-[25px] lg:text-[30px] font-bold text-gray-900 mb-6">Shop Products</h1>
 
           {/* Search Bar */}
           <div className="flex gap-4 mb-6">
@@ -137,11 +137,11 @@ export default function ShopComponent() {
               placeholder="Search products by name, SKU..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition"
             />
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              className="flex items-center gap-2 px-4 py-3 bg-[#7b3306] text-white rounded-lg hover:bg-[#5a2704] transition"
             >
               <Filter size={20} />
               Filters
@@ -274,12 +274,14 @@ export default function ShopComponent() {
                         {/* Image Container */}
                         <div className="relative w-full h-64 bg-gray-200 overflow-hidden">
                           {product.images && product.images[0] && (
-                            <Image
-                              src={product.images[0].url}
-                              alt={product.name}
-                              fill
-                              className="object-cover group-hover:scale-110 transition duration-300"
-                            />
+                            <Link href={`/shop/${product._id}`}>
+                              <Image
+                                src={product.images[0].url}
+                                alt={product.name}
+                                fill
+                                className="object-cover group-hover:scale-110 transition duration-300"
+                              />
+                            </Link>
                           )}
                           {discountPercent > 0 && (
                             <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -307,7 +309,7 @@ export default function ShopComponent() {
 
                           {/* Product Name */}
                           <Link href={`/shop/${product._id}`}>
-                            <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition line-clamp-2 mb-2 cursor-pointer">
+                            <h3 className="font-semibold text-gray-900 hover:text-[#7b3306] transition line-clamp-2 mb-2 cursor-pointer">
                               {product.name}
                             </h3>
                           </Link>
@@ -362,14 +364,14 @@ export default function ShopComponent() {
                             <button
                               onClick={() => handleAddToCart(product)}
                               disabled={product.stock === 0}
-                              className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
+                              className="flex-1 flex items-center justify-center gap-2 bg-[#7b3306] text-white py-2 rounded-lg hover:bg-[#5a2704] transition disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
                             >
                               <ShoppingCart size={18} />
                               Add to Cart
                             </button>
                             <Link
                               href={`/shop/${product._id}`}
-                              className="flex-1 text-center border border-gray-300 text-gray-700 py-2 rounded-lg hover:border-blue-600 hover:text-blue-600 transition font-medium"
+                              className="flex-1 text-center border border-gray-300 text-gray-700 py-2 rounded-lg hover:border-[#7b3306] hover:text-[#7b3306] transition font-medium"
                             >
                               View
                             </Link>
@@ -386,7 +388,7 @@ export default function ShopComponent() {
                     <button
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:border-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                      className="px-4 py-2 border border-gray-300 rounded-lg hover:border-[#7b3306] disabled:opacity-50 disabled:cursor-not-allowed transition"
                     >
                       Previous
                     </button>
@@ -397,8 +399,8 @@ export default function ShopComponent() {
                         onClick={() => setCurrentPage(i + 1)}
                         className={`px-4 py-2 rounded-lg transition ${
                           currentPage === i + 1
-                            ? 'bg-blue-600 text-white'
-                            : 'border border-gray-300 hover:border-blue-600'
+                            ? 'bg-[#7b3306] text-white'
+                            : 'border border-gray-300 hover:border-[#7b3306]'
                         }`}
                       >
                         {i + 1}
@@ -408,7 +410,7 @@ export default function ShopComponent() {
                     <button
                       onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                       disabled={currentPage === totalPages}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:border-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                      className="px-4 py-2 border border-gray-300 rounded-lg hover:border-[#7b3306] disabled:opacity-50 disabled:cursor-not-allowed transition"
                     >
                       Next
                     </button>

@@ -41,7 +41,7 @@ export default function CartComponent() {
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b border-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-gray-900">Shopping Cart</h1>
+          <h1 className="text-[25px] lg:text-[30px] font-bold text-gray-900">Shopping Cart</h1>
           <p className="text-gray-600 mt-2">{cart.length} item{cart.length !== 1 ? 's' : ''} in cart</p>
         </div>
       </div>
@@ -53,10 +53,10 @@ export default function CartComponent() {
               {cart.map((item) => (
                 <div
                   key={item.cartItemId}
-                  className="flex gap-4 p-6 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition"
+                  className="flex flex-col md:flex-row gap-4 p-6 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition"
                 >
                   {/* Product Image */}
-                  <div className="relative w-24 h-24 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
+                  <div className="relative w-24 h-24 bg-gray-200 rounded-lg shrink-0 overflow-hidden">
                     {item.images && item.images[0] && (
                       <Image
                         src={item.images[0].url}

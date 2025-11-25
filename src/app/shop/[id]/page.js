@@ -306,12 +306,12 @@ export default function ProductDetailsComponent({ params }) {
 
         {/* Tabs Section */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="flex gap-8 border-b border-gray-200 mb-6">
+          <div className="flex flex-col lg:flex-row gap-8 border-b border-gray-200 pb-4 md:pb-8 mb-6">
             {['description', 'specifications', 'reviews'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-3 font-semibold capitalize transition border-b-2 -mb-6 ${
+                className={`px-4 py-3 font-semibold capitalize transition border-b-2 -mb-6 cursor-pointer ${
                   activeTab === tab
                     ? 'text-blue-600 border-blue-600'
                     : 'text-gray-600 border-transparent hover:text-gray-900'

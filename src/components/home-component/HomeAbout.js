@@ -3,11 +3,11 @@ import { Heart, Sparkles, Award } from 'lucide-react';
 
 export default function HomeAbout() {
   return (
-    <section className="bg-linear-to-b from-white to-amber-50 py-20">
+    <section className="bg-linear-to-b from-white to-amber-50 py-12 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-amber-900 mb-4 flex items-center justify-center gap-3">
+          <h2 className="text-[25px] lg:text-[30px] font-bold text-amber-900 mb-4 flex items-center justify-center gap-3">
             <Sparkles size={36} className="text-amber-600" />
             About Resin by Saidat
           </h2>
@@ -25,7 +25,7 @@ export default function HomeAbout() {
               <Image
                 src="/images/saidat.png" 
                 alt="Resin by Saidat Artisan"
-                fill
+    px            fill
                 sizes='100%'
                 className="object-cover group-hover:scale-105 transition duration-500"
               />
@@ -34,7 +34,7 @@ export default function HomeAbout() {
 
           {/* Text Content */}
           <div className="flex-1">
-            <h3 className="text-4xl font-bold text-amber-900 mb-6">
+            <h3 className="text-[25px] lg:text-[30px] font-bold text-amber-900 mb-6">
               Crafted with Passion & Precision
             </h3>
             

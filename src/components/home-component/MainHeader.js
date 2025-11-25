@@ -169,21 +169,17 @@ export default function MainHeader() {
             {/* Wishlist */}
             <Link href="/wishlist" className="relative p-2 rounded-lg hover:bg-gray-100 transition">
               <Heart size={24} className="text-gray-700" />
-              {wishlist.length > 0 && (
-                <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                  {wishlist.length}
-                </span>
-              )}
+              <span suppressHydrationWarning className={`absolute top-0 right-0 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full ${wishlist.length === 0 ? 'hidden' : ''}`}>
+                {wishlist.length}
+              </span>
             </Link>
 
             {/* Shopping Cart */}
             <Link href="/cart" className="relative p-2 rounded-lg hover:bg-gray-100 transition">
               <ShoppingCart size={24} className="text-gray-700" />
-              {getCartItemCount() > 0 && (
-                <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 bg-[#7b3306] text-white text-xs font-bold rounded-full">
-                  {getCartItemCount()}
-                </span>
-              )}
+              <span suppressHydrationWarning className={`absolute top-0 right-0 flex items-center justify-center w-5 h-5 bg-[#7b3306] text-white text-xs font-bold rounded-full ${getCartItemCount() === 0 ? 'hidden' : ''}`}>
+                {getCartItemCount()}
+              </span>
             </Link>
 
             {user ? (
@@ -239,6 +235,25 @@ export default function MainHeader() {
             )}
           </div>
 
+          {/* Mobile Right side */}
+          <div className="flex md:hidden tems-center space-x-3 ml-15">
+            {/* Wishlist */}
+            <Link href="/wishlist" className="relative p-2 rounded-lg hover:bg-gray-100 transition">
+              <Heart size={24} className="text-gray-700" />
+              <span suppressHydrationWarning className={`absolute top-0 right-0 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full ${wishlist.length === 0 ? 'hidden' : ''}`}>
+                {wishlist.length}
+              </span>
+            </Link>
+
+            {/* Shopping Cart */}
+            <Link href="/cart" className="relative p-2 rounded-lg hover:bg-gray-100 transition">
+              <ShoppingCart size={24} className="text-gray-700" />
+              <span suppressHydrationWarning className={`absolute top-0 right-0 flex items-center justify-center w-5 h-5 bg-[#7b3306] text-white text-xs font-bold rounded-full ${getCartItemCount() === 0 ? 'hidden' : ''}`}>
+                {getCartItemCount()}
+              </span>
+            </Link>
+          </div>
+
           {/* Mobile hamburger */}
           <div className="lg:hidden flex items-center">
             <button
@@ -264,7 +279,7 @@ export default function MainHeader() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <Link href="/" className="flex items-center gap-3">
-                <Image src="/images/rayob.svg" alt="Rayob Logo" width={100} height={50} className="w-40 block rounded-md" />
+                <Image src="/images/resinlogo.png" alt="Resin by Saidat Logo" width={100} height={50} className="w-40 block rounded-md" />
               </Link>
               <button onClick={() => setOpen(false)} className="text-red-600 text-2xl font-semibold">✕</button>
             </div>
@@ -276,7 +291,6 @@ export default function MainHeader() {
                     { href: '/about-us', label: 'About Us' },
                     { href: '/projects', label: 'Projects' },
                     { href: '/gallery', label: 'Gallery' },
-                    { href: '/careers', label: 'Careers' },
                   ]
 
                   return (

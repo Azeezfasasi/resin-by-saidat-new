@@ -70,7 +70,7 @@ export default function Register() {
               value={formData.firstName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="John"
             />
           </div>
@@ -83,7 +83,7 @@ export default function Register() {
               value={formData.lastName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="Doe"
             />
           </div>
@@ -96,7 +96,7 @@ export default function Register() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="you@example.com"
             />
           </div>
@@ -109,7 +109,7 @@ export default function Register() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="Enter password"
             />
           </div>
@@ -122,7 +122,7 @@ export default function Register() {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7b3306]"
               placeholder="Confirm password"
             />
           </div>
@@ -134,14 +134,14 @@ export default function Register() {
               checked={formData.terms}
               onChange={handleChange}
               required
-              className="h-4 w-4 rounded border-gray-300 focus:ring-2 focus:ring-blue-900"
+              className="h-4 w-4 rounded border-gray-300 focus:ring-2 focus:ring-[#7b3306]"
             />
-            <span>I agree to the <Link href="/terms" className="text-blue-900 hover:text-blue-800">Terms & Conditions</Link></span>
+            <span>I agree to the <Link href="/terms" className="text-[#7b3306] hover:text-[#6a2e05]">Terms & Conditions</Link></span>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold shadow hover:bg-blue-800 transition"
+            className="w-full bg-[#7b3306] text-white py-3 rounded-lg font-semibold shadow hover:bg-[#6a2e05] transition"
             disabled={submitting}
           >
             {submitting ? "Creating account..." : "Register"}
@@ -150,7 +150,7 @@ export default function Register() {
 
         <p className="text-center text-gray-600 mt-6">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-900 hover:text-blue-800 font-medium">
+          <Link href="/login" className="text-[#7b3306] hover:text-[#6a2e05] font-medium">
             Login
           </Link>
         </p>

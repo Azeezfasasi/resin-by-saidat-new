@@ -93,7 +93,7 @@ export default function TopSellingItems() {
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 mb-2 flex items-center gap-3">
+            <h2 className="text-[25px] md:text-[30px] font-bold text-amber-900 mb-2 flex items-center gap-3">
               <TrendingUp size={32} className="text-amber-600" />
               Top Selling Items
             </h2>
