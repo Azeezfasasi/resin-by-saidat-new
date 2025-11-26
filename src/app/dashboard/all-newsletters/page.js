@@ -7,6 +7,7 @@ import NewsletterCard from '../components/NewsletterCard';
 import Modal from '../components/Modal';
 import { useToast } from '../components/Toast';
 import { campaignAPI } from '@/utils/newsletter-api';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function AllNewsletter() {
   const { addToast } = useToast();
@@ -117,6 +118,7 @@ export default function AllNewsletter() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="space-y-6 w-fit lg:w-full">
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-center justify-between">
@@ -271,5 +273,6 @@ export default function AllNewsletter() {
         </p>
       </Modal>
     </div>
+    </ProtectedRoute>
   );
 }

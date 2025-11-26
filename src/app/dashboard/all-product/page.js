@@ -21,6 +21,7 @@ import {
   Download,
 } from 'lucide-react';
 import { useState as useStateModal } from 'react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const AllProductsPage = () => {
   const router = useRouter();
@@ -163,6 +164,7 @@ const AllProductsPage = () => {
   }, [alert]);
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20">
@@ -627,6 +629,7 @@ const AllProductsPage = () => {
         </div>
       )}
     </div>
+    </ProtectedRoute>
   );
 };
 

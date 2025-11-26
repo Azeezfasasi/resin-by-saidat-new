@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { fetchGallery, updateGallery, uploadImageToCloudinary, deleteImageFromCloudinary } from '@/app/utils/galleryApi';
 import { Upload, X, Loader, ArrowLeft } from 'lucide-react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const CATEGORIES = ['project', 'engineering', 'fibre', 'maintenance', 'other'];
 const TAGS = ['vip', 'active', 'engaged', 'new', 'featured', 'recommended'];
@@ -166,6 +167,7 @@ export default function EditGalleryPage() {
   }
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 py-6 sm:py-8">
       <div className="max-w-2xl mx-auto px-3 sm:px-4">
         {/* Back Button */}
@@ -415,5 +417,6 @@ export default function EditGalleryPage() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

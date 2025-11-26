@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ChevronLeft, Upload, AlertCircle } from 'lucide-react';
 import { use } from 'react';
 import categoryApi from '@/lib/categoryApi';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function CategoryDetails({ params }) {
   const { id } = use(params);
@@ -163,6 +164,7 @@ export default function CategoryDetails({ params }) {
   }
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
@@ -418,5 +420,6 @@ export default function CategoryDetails({ params }) {
         </form>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

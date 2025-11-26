@@ -780,9 +780,9 @@ export const changeUserRole = async (req, userId) => {
     const body = await req.json();
     const { role, permissions } = body;
 
-    if (!role || !["client", "admin", "staff-member"].includes(role)) {
+    if (!role || !["customer", "admin", "staff-member"].includes(role)) {
       return NextResponse.json(
-        { success: false, message: "Invalid role. Must be one of: client, admin, staff-member" },
+        { success: false, message: "Invalid role. Must be one of: customer, admin, staff-member" },
         { status: 400 }
       );
     }

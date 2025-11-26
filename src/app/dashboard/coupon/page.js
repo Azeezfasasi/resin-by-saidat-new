@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, Search, AlertCircle } from 'lucide-react';
 import couponApi from '@/lib/couponApi';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function AllCoupons() {
   const [coupons, setCoupons] = useState([]);
@@ -48,6 +49,7 @@ export default function AllCoupons() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 p-0 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
@@ -223,5 +225,6 @@ export default function AllCoupons() {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

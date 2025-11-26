@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Edit2, Trash2, Eye, EyeOff, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { Commet } from "react-loading-indicators";
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 const ManageBlogPage = () => {
 	const router = useRouter()
@@ -139,6 +140,7 @@ const ManageBlogPage = () => {
 	}
 
 	return (
+		<ProtectedRoute allowedRoles={['admin', 'staff-member']}>
 		<div className="space-y-6 overflow-x-hidden">
 			{/* Header with Create Button */}
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -461,6 +463,7 @@ const ManageBlogPage = () => {
 				</div>
 			)}
 		</div>
+		</ProtectedRoute>
 	)
 }
 

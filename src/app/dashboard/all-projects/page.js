@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 // Backend integration: fetch projects from API
 
@@ -134,6 +135,7 @@ export default function AllProjectsPage() {
   }
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 py-6 px-0 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -363,5 +365,6 @@ export default function AllProjectsPage() {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   )
 }

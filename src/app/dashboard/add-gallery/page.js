@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { uploadImageToCloudinary } from '@/app/utils/galleryApi';
 import { createGallery } from '@/app/utils/galleryApi';
 import { Upload, X, Loader } from 'lucide-react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const CATEGORIES = ['project', 'engineering', 'fibre', 'maintenance', 'other'];
 const TAGS = ['vip', 'active', 'engaged', 'new', 'featured', 'recommended'];
@@ -128,6 +129,7 @@ export default function AddGalleryPage() {
   };
 
   return (
+  <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 py-6 sm:py-8 mx-auto">
       <div className="max-w-2xl mx-auto px-3 sm:px-4">
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-8">
@@ -369,5 +371,6 @@ export default function AddGalleryPage() {
         </div>
       </div>
     </div>
+  </ProtectedRoute>
   );
 }

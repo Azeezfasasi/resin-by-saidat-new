@@ -12,6 +12,7 @@ import {
   orderStatuses,
   paymentStatuses
 } from '@/lib/ordersApi';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function AllOrders() {
   const [orders, setOrders] = useState([]);
@@ -108,6 +109,7 @@ export default function AllOrders() {
   }
 
   return (
+  <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 p-3 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -385,5 +387,6 @@ export default function AllOrders() {
         )}
       </div>
     </div>
+  </ProtectedRoute>
   );
 }

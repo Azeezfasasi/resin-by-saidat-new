@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import ProductFormComponent from '@/components/ProductForm/ProductFormComponent';
 import ProductDetailView from '@/components/ProductDetail/ProductDetailView';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const ProductDetailPage = ({ params }) => {
   const router = useRouter();
@@ -125,6 +126,7 @@ const ProductDetailPage = ({ params }) => {
   }
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-100 py-8 px-4 md:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Back Button */}
@@ -185,6 +187,7 @@ const ProductDetailPage = ({ params }) => {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

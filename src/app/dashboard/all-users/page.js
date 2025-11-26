@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Commet } from "react-loading-indicators";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const PAGE_SIZE = 10;
 
@@ -255,6 +256,7 @@ export default function AllUsersPage() {
   }
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="w-[360px] md:w-full md:max-w-7xl p-2 md:p-6 bg-white rounded-xl shadow-lg">
       <h1 className="text-[20px] md:text-2xl font-bold mb-4">All Users</h1>
       <div className="flex flex-wrap gap-4 mb-6">
@@ -267,7 +269,7 @@ export default function AllUsersPage() {
         />
         <select value={role} onChange={e => { setRole(e.target.value); setPage(1); }} className="border px-3 py-2 rounded-lg outline-none border-gray-400 focus:ring-2 focus:ring-blue-500 text-[14px] md:text-base">
           <option value="">All Roles</option>
-          <option value="client">Client</option>
+          <option value="customer">Customer</option>
           <option value="admin">Admin</option>
           <option value="staff-member">Staff Member</option>
         </select>
@@ -524,7 +526,7 @@ export default function AllUsersPage() {
                 className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">-- Select Role --</option>
-                <option value="client">Client</option>
+                <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
                 <option value="staff-member">Staff Member</option>
               </select>
@@ -548,5 +550,6 @@ export default function AllUsersPage() {
         </div>
       )}
     </div>
+    </ProtectedRoute>
   );
 }

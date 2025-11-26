@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from "@/context/AuthContext";
 import { Briefcase, NotepadText } from 'lucide-react';
 import Link from 'next/link';
+import { ProtectedRoute } from '../ProtectedRoute';
 
 function getGreeting(date) {
   const hour = date.getHours();
@@ -66,17 +67,19 @@ export default function DashboardWelcome() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row md:items-center gap-3">
-          <Link href="/dashboard/add-projects" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-[#7b3306] text-white rounded-md text-sm hover:bg-[#4a1e02] cursor-pointer">
-            <Briefcase />
-            Add Projects
-          </Link>
+        {user?.role === 'admin' || user?.role === 'staff-member' ? (
+          <div className="flex flex-col lg:flex-row md:items-center gap-3">
+            <Link href="/dashboard/add-projects" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-[#7b3306] text-white rounded-md text-sm hover:bg-[#4a1e02] cursor-pointer">
+              <Briefcase />
+              Add Projects
+            </Link>
 
-          <Link href="/dashboard/add-blog" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 border bg-gray-100 border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
-            <NotepadText />
-            Publish Blog Posts
-          </Link>
-        </div>
+            <Link href="/dashboard/add-blog" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 border bg-gray-100 border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
+              <NotepadText />
+              Publish Blog Posts
+            </Link>
+          </div>
+        ) : null}
       </div>
     </section>
   );

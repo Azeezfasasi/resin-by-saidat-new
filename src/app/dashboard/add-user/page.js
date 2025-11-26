@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const roles = [
-  { value: "client", label: "Client" },
+  { value: "customer", label: "Customer" },
   { value: "admin", label: "Admin" },
-  { value: "staff-member", label: "Staff Member" },
-  { value: "super-admin", label: "Super Admin" },
+  { value: "staff-member", label: "Staff Member" }
 ];
 
 export default function AddUserPage() {
@@ -65,6 +65,7 @@ export default function AddUserPage() {
   };
 
   return (
+  <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="max-w-xl mx-auto p-4 md:p-8 bg-white rounded-xl shadow-lg mt-3 md:mt-8">
       <h1 className="text-[20px] md:text-2xl font-bold mb-6">Add New User</h1>
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -150,5 +151,6 @@ export default function AddUserPage() {
         </button>
       </form>
     </div>
+  </ProtectedRoute>
   );
 }

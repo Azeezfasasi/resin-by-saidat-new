@@ -1,6 +1,11 @@
 import React from 'react'
 import ProfileManagement from './components/ProfileManagement'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 export default function page() {
-  return <ProfileManagement />
+  return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+      <ProfileManagement />
+    </ProtectedRoute>
+  )
 }

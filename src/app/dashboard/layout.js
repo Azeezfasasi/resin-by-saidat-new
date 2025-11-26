@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react"
 import DashboardHeader from "@/components/dashboard-component/DashboardHeader"
 import DashboardMenu from "@/components/dashboard-component/DashboardMenu"
+import { ProtectedRoute } from "@/components/ProtectedRoute"
 
 // This is a client layout so we can manage sidebar collapse state.
 export default function DashboardLayout({ children }) {
@@ -23,6 +24,7 @@ export default function DashboardLayout({ children }) {
   }, [])
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member', 'customer']}>
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <DashboardHeader onToggleSidebar={toggleSidebar} onToggleMobileMenu={toggleMobileMenu} />
 
@@ -32,5 +34,6 @@ export default function DashboardLayout({ children }) {
         <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
+    </ProtectedRoute>
   )
 }

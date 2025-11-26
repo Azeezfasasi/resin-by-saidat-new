@@ -6,6 +6,7 @@ import SubscriberRow from '../components/SubscriberRow';
 import Modal from '../components/Modal';
 import { useToast } from '../components/Toast';
 import { subscriberAPI, newsletterHelpers } from '@/utils/newsletter-api';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function Subscribers() {
   const { addToast } = useToast();
@@ -199,6 +200,7 @@ export default function Subscribers() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="space-y-6 w-fit lg:w-full">
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
@@ -620,5 +622,6 @@ export default function Subscribers() {
         </div>
       </Modal>
     </div>
+    </ProtectedRoute>
   );
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, Search, AlertCircle, Image as ImageIcon } from 'lucide-react';
 import categoryApi from '@/lib/categoryApi';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function AllCategory() {
   const [categories, setCategories] = useState([]);
@@ -55,6 +56,7 @@ export default function AllCategory() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 p-0 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -288,5 +290,6 @@ export default function AllCategory() {
         )}
       </div>
     </div>
+  </ProtectedRoute>
   );
 }

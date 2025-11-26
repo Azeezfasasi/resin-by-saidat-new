@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchGalleries, deleteGallery } from '@/app/utils/galleryApi';
 import { Plus, Edit, Trash2, Eye, Loader, Search } from 'lucide-react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const CATEGORIES = ['project', 'engineering', 'fibre', 'maintenance', 'other'];
 
@@ -95,6 +96,7 @@ export default function AllGalleriesPage() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
@@ -353,5 +355,6 @@ export default function AllGalleriesPage() {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

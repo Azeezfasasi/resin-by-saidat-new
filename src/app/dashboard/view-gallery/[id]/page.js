@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { fetchGallery } from '@/app/utils/galleryApi';
 import { ArrowLeft, Loader } from 'lucide-react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function ViewGalleryPage() {
   const router = useRouter();
@@ -58,6 +59,7 @@ export default function ViewGalleryPage() {
   }
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 py-6 sm:py-8">
       <div className="max-w-4xl mx-auto px-3 sm:px-4">
         {/* Back Button */}
@@ -195,5 +197,6 @@ export default function ViewGalleryPage() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

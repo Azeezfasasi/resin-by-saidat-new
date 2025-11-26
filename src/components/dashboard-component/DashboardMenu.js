@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images  } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext'
 
 function Icon({ name }) {
   switch (name) {
@@ -49,81 +50,98 @@ function Icon({ name }) {
 }
 
 export default function DashboardMenu({ collapsed, mobileOpen = false, onClose = () => {} }) {
+  const { user } = useAuth();
   const pathname = usePathname() || ''
+  
+  // Define menu items with role requirements
   const items = [
-    { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-    { href: '/dashboard/order', label: 'Orders', icon: 'dashboard' },
+    { href: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['admin', 'customer', 'staff-member'] },
+    { href: '/dashboard/order', label: 'Orders', icon: 'dashboard', roles: ['admin', 'staff-member'] },
     {
       href: '/dashboard/products',
       label: 'Products',
       icon: 'projects',
+      roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/add-product', label: 'Add Product' },
-        { href: '/dashboard/all-product', label: 'All Products' },
-        { href: '/dashboard/all-category', label: 'Product Categories' }
+        { href: '/dashboard/add-product', label: 'Add Product', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/all-product', label: 'All Products', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/all-category', label: 'Product Categories', roles: ['admin'] }
       ]
     },
     {
       href: '/dashboard/coupon',
       label: 'Coupons',
       icon: 'projects',
+      roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/add-coupon', label: 'Add Coupon' },
-        { href: '/dashboard/coupon', label: 'All Coupons' },
+        { href: '/dashboard/add-coupon', label: 'Add Coupon', roles: ['admin'] },
+        { href: '/dashboard/coupon', label: 'All Coupons', roles: ['admin', 'staff-member'] },
       ]
     },
-    { href: '/dashboard/training-registration', label: 'Training Registration', icon: 'dashboard' },
+    { href: '/dashboard/training-registration', label: 'Training Registration', icon: 'dashboard', roles: ['admin', 'staff-member'] },
     {
       href: '/dashboard/blog',
       label: 'Blog',
       icon: 'blog',
+      roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/add-blog', label: 'Add Blog' },
-        { href: '/dashboard/manage-blog', label: 'Manage Blogs' }
+        { href: '/dashboard/add-blog', label: 'Add Blog', roles: ['admin'] },
+        { href: '/dashboard/manage-blog', label: 'Manage Blogs', roles: ['admin', 'staff-member'] }
       ]
     },
     {
       href: '/dashboard/projects',
       label: 'Projects',
       icon: 'projects',
+      roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/add-projects', label: 'Add Project' },
-        { href: '/dashboard/all-projects', label: 'All Projects' }
+        { href: '/dashboard/add-projects', label: 'Add Project', roles: ['admin'] },
+        { href: '/dashboard/all-projects', label: 'All Projects', roles: ['admin', 'staff-member'] }
       ]
     },
-    { href: '/dashboard/contact-form-responses', label: 'Contact Form Responses', icon: 'Contact' },
-    { href: '/dashboard/quote-requests', label: 'Quote Requests', icon: 'Quote Requests' },
+    { href: '/dashboard/contact-form-responses', label: 'Contact Form Responses', icon: 'Contact', roles: ['admin', 'staff-member'] },
+    { href: '/dashboard/quote-requests', label: 'Quote Requests', icon: 'Quote Requests', roles: ['admin', 'staff-member'] },
     {
       href: '/dashboard/users',
       label: 'Manage Users',
       icon: 'Users',
+      roles: ['admin'],
       children: [
-        { href: '/dashboard/all-users', label: 'All Users' },
-        { href: '/dashboard/add-user', label: 'Add User' },
-        { href: '/dashboard/change-user-password', label: 'Change User Password' }
+        { href: '/dashboard/all-users', label: 'All Users', roles: ['admin'] },
+        { href: '/dashboard/add-user', label: 'Add User', roles: ['admin'] },
+        { href: '/dashboard/change-user-password', label: 'Change User Password', roles: ['admin'] }
       ]
     },
     {
       href: '/dashboard/all-newsletter',
       label: 'Newsletter Management',
       icon: 'Newsletter',
+      roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/send-newsletter', label: 'Send Newsletter' },
-        { href: '/dashboard/all-newsletters', label: 'All Newsletters' },
-        { href: '/dashboard/subscribers', label: 'Subscribers' },
+        { href: '/dashboard/send-newsletter', label: 'Send Newsletter', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/all-newsletters', label: 'All Newsletters', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/subscribers', label: 'Subscribers', roles: ['admin'] },
       ]
     },
     {
       href: '/dashboard/gallery',
       label: 'Gallery Management',
       icon: 'Gallery',
+      roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/add-gallery', label: 'Add Gallery' },
-        { href: '/dashboard/all-gallery', label: 'All Gallery' },
+        { href: '/dashboard/add-gallery', label: 'Add Gallery', roles: ['admin'] },
+        { href: '/dashboard/all-gallery', label: 'All Gallery', roles: ['admin', 'staff-member'] },
       ]
     },
-    { href: '/dashboard/my-profile', label: 'Profile', icon: 'dashboard' },
+    { href: '/dashboard/track-order', label: 'Track Your Orders', icon: 'dashboard', roles: ['customer'] },
+    { href: '/dashboard/my-profile', label: 'Profile', icon: 'dashboard', roles: ['admin', 'customer', 'staff-member'] },
   ]
+
+  // Helper function to check if user has access to item
+  const hasAccess = (itemRoles) => {
+    if (!itemRoles) return true; // No role restriction
+    return itemRoles.includes(user?.role);
+  }
 
   const [openKey, setOpenKey] = useState(null)
 
@@ -137,17 +155,22 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       <div className="h-full overflow-y-auto py-6 px-2">
         <ul className="space-y-1">
           {items.map(i => {
+            // Check if user has access to this item
+            if (!hasAccess(i.roles)) return null;
+
             const active = pathname === i.href || pathname.startsWith(i.href + '/')
             const hasChildren = Array.isArray(i.children) && i.children.length > 0
             const isOpen = openKey === i.href
+            // Filter children based on access
+            const visibleChildren = hasChildren ? i.children.filter(c => hasAccess(c.roles)) : [];
 
             return (
               <li key={i.href}>
-                {hasChildren ? (
+                {visibleChildren.length > 0 ? (
                   <div>
                     <button
                       onClick={() => toggleSub(i.href)}
-                      className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-blue-800'}`}
+                      className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-white/20'}`}
                     >
                       <span className="flex justify-start items-center gap-2">
                         <span className="shrink-0"> <Icon name={i.icon} /> </span>
@@ -163,9 +186,9 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                     {/* Submenu (desktop) */}
                     {!collapsed && isOpen && (
                       <ul className="mt-1 space-y-1 pl-10">
-                        {i.children.map(c => (
+                        {visibleChildren.map(c => (
                           <li key={c.href}>
-                            <Link href={c.href} className={`block px-3 py-2 rounded-md text-sm ${pathname === c.href ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-blue-600'}`}>
+                            <Link href={c.href} className={`block px-3 py-2 rounded-md text-sm ${pathname === c.href ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-white/20'}`}>
                               {c.label}
                             </Link>
                           </li>
@@ -174,7 +197,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                     )}
                   </div>
                 ) : (
-                  <Link href={i.href} className={`flex items-center gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-blue-800'}`}>
+                  <Link href={i.href} className={`flex items-center gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-[#7b3306]' : 'text-white hover:bg-white/20'}`}>
                     <span className="shrink-0"> <Icon name={i.icon} /> </span>
                     {!collapsed && <span className="text-sm font-medium">{i.label}</span>}
                   </Link>
@@ -207,13 +230,18 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
 
           <ul className="space-y-1">
               {items.map(i => {
+                // Check if user has access to this item
+                if (!hasAccess(i.roles)) return null;
+
                 const active = pathname === i.href || pathname.startsWith(i.href + '/')
                 const hasChildren = Array.isArray(i.children) && i.children.length > 0
                 const isOpen = openKey === i.href
+                // Filter children based on access
+                const visibleChildren = hasChildren ? i.children.filter(c => hasAccess(c.roles)) : [];
 
                 return (
                   <li key={i.href}>
-                    {hasChildren ? (
+                    {visibleChildren.length > 0 ? (
                       <div>
                         <button onClick={() => toggleSub(i.href)} className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-md ${active ? 'bg-indigo-50 text-blue-800' : 'text-white hover:bg-blue-900'}`}>
                           <span className="flex items-center gap-3">
@@ -228,7 +256,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                         {/* Mobile submenu accordion */}
                         {isOpen && (
                           <ul className="mt-1 space-y-1 pl-6">
-                            {i.children.map(c => (
+                            {visibleChildren.map(c => (
                               <li key={c.href}>
                                 <Link href={c.href} onClick={onClose} className={`block px-3 py-2 rounded-md text-sm ${pathname === c.href ? 'bg-indigo-50 text-indigo-600' : 'text-white hover:bg-blue-900'}`}>
                                   {c.label}

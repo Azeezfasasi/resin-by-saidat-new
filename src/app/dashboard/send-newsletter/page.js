@@ -5,6 +5,7 @@ import { Send, Clock, Users, Sparkles } from 'lucide-react';
 import Modal from '../components/Modal';
 import { useToast } from '../components/Toast';
 import { campaignAPI } from '@/utils/newsletter-api';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const RECIPIENT_TYPES = [
   { value: 'all', label: 'All Active Subscribers' },
@@ -210,6 +211,7 @@ export default function SendNewsletter() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="space-y-6">
       {/* Header */}
       <div>
@@ -406,5 +408,6 @@ export default function SendNewsletter() {
         </div>
       </Modal>
     </div>
+    </ProtectedRoute>
   );
 }

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, AlertCircle, Calendar } from 'lucide-react';
 import couponApi from '@/lib/couponApi';
+import { useAuth } from '@/context/AuthContext';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function AddCoupon() {
   const [formData, setFormData] = useState({
@@ -82,6 +84,7 @@ export default function AddCoupon() {
   };
 
   return (
+  <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 p-0 lg:p-8">
       <div className="max-w-2xl mx-auto">
         <Link
@@ -316,5 +319,6 @@ export default function AddCoupon() {
         </form>
       </div>
     </div>
+  </ProtectedRoute>
   );
 }

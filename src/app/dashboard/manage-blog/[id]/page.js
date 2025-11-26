@@ -6,6 +6,7 @@ import { ArrowLeft, Upload } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 function EditBlogContent() {
 	const router = useRouter()
@@ -246,6 +247,7 @@ function EditBlogContent() {
 	}
 
 	return (
+		<ProtectedRoute allowedRoles={['admin', 'staff-member']}>
 		<div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-4xl mx-auto">
 				{/* Header with Back Button */}
@@ -626,11 +628,13 @@ function EditBlogContent() {
 				</form>
 			</div>
 		</div>
+		</ProtectedRoute>
 	)
 }
 
 export default function EditBlogPage() {
 	return (
+		<ProtectedRoute allowedRoles={['admin', 'staff-member']}>
 		<Suspense
 			fallback={
 				<div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
@@ -642,5 +646,6 @@ export default function EditBlogPage() {
 		>
 			<EditBlogContent />
 		</Suspense>
+		</ProtectedRoute>
 	)
 }

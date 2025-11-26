@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../../../context/AuthContext';
 import axios from 'axios';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export default function ProfileManagement() {
   const { user, token, updateUserData } = useAuth();
@@ -224,6 +225,7 @@ export default function ProfileManagement() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-50 pt-0 pb-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -539,5 +541,6 @@ export default function ProfileManagement() {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

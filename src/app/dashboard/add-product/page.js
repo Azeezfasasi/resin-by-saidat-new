@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProductFormComponent from '@/components/ProductForm/ProductFormComponent';
 import { AlertCircle, CheckCircle } from 'lucide-react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const AddProductPage = () => {
   const router = useRouter();
@@ -51,6 +52,7 @@ const AddProductPage = () => {
   };
 
   return (
+    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-100 py-4 md:py-8 px-3 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Alert Messages */}
@@ -87,6 +89,7 @@ const AddProductPage = () => {
         />
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 
