@@ -55,7 +55,7 @@ export default function CallToAction() {
             <ArrowRight size={20} className="group-hover:translate-x-1 transition" />
           </a>
           <a
-            href="/training-details"
+            href="/about-us"
             className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white/20 transition duration-200"
           >
             Learn More

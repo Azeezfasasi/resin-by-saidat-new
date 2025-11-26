@@ -11,21 +11,21 @@ export default function Hero() {
       subtitle: 'Handcrafted resin masterpieces with stunning colors and finishes. Transform your space with timeless elegance.',
       cta: { label: 'Shop Now', href: '/shop' },
       bg: 'linear-gradient(135deg, #f5e6d3 0%, #e8d4c0 100%)',
-      image: { src: '/images/projectplaceholder.png', alt: 'Luxury resin art' }
+      image: { src: '/images/saidat3.jpeg', alt: 'Luxury resin art' }
     },
     {
       title: 'Custom Resin Designs',
       subtitle: 'Create bespoke pieces tailored to your vision. From jewelry to home décor, we bring your ideas to life.',
       cta: { label: 'Order Custom', href: '/custom-orders' },
       bg: 'linear-gradient(135deg, #faf4ef 0%, #f5e6d3 100%)',
-      image: { src: '/images/projectplaceholder.png', alt: 'Custom resin designs' }
+      image: { src: '/images/gallery4.jpeg', alt: 'Custom resin designs' }
     },
     {
       title: 'Premium Collections',
       subtitle: 'Explore our curated collections of bestselling resin art, perfect for gifts or personal indulgence.',
       cta: { label: 'Browse Collections', href: '/shop' },
       bg: 'linear-gradient(135deg, #f0e1d1 0%, #e8d4c0 100%)',
-      image: { src: '/images/projectplaceholder.png', alt: 'Premium resin collections' }
+      image: { src: '/images/gallery6.jpeg', alt: 'Premium resin collections' }
     }
   ]
 

@@ -100,8 +100,8 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Phone size={18} className="text-white shrink-0" />
-              <a href="tel:+234815226033" className="hover:text-white transition">
-                (+234) 815226033
+              <a href="tel:+2348125925447" className="hover:text-white transition">
+                (+234) 8125925447
               </a>
             </li>
             <li className="flex items-center gap-3">
@@ -112,8 +112,8 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Mail size={18} className="text-white shrink-0" />
-              <a href="mailto:hello@resinbysaidat.com" className="hover:text-white transition">
-                hello@resinbysaidat.com
+              <a href="mailto:info@resinbysaidat.com" className="hover:text-white transition">
+                info@resinbysaidat.com
               </a>
             </li>
           </ul>
@@ -123,7 +123,12 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-amber-800 mt-12 pt-6 text-center text-sm text-white">
         © {new Date().getFullYear()} <span className="text-white font-medium">Resin By Saidat</span>. 
-        All rights reserved. | Designed with passion for creatives
+        All rights reserved. | Developed by {''}
+        <a 
+          href="https://wa.me/2348117256646" target="_blank" rel="noopener noreferrer" className="hover:text-white underline"
+        >
+          Sense Solutions
+        </a>
       </div>
     </footer>
   );
