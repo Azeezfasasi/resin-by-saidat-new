@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { useAuth } from '@/context/AuthContext'
 
 export default function AddProjectsPage() {
   const [formData, setFormData] = useState({
@@ -27,6 +28,7 @@ export default function AddProjectsPage() {
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
+  const { user } = useAuth();
 
   function handleInputChange(e) {
     const { name, value } = e.target
@@ -139,6 +141,7 @@ export default function AddProjectsPage() {
 
   return (
   <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+    {user?.role === 'admin' || user?.role === 'staff-member' ? (
     <div className="min-h-screen bg-gray-50 py-6 px-0 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -329,6 +332,7 @@ export default function AddProjectsPage() {
         </form>
       </div>
     </div>
+    ) : null}
   </ProtectedRoute>
   )
 }

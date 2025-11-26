@@ -95,7 +95,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       icon: 'projects',
       roles: ['admin', 'staff-member'],
       children: [
-        { href: '/dashboard/add-projects', label: 'Add Project', roles: ['admin'] },
+        { href: '/dashboard/add-projects', label: 'Add Project', roles: ['admin', 'staff-member'] },
         { href: '/dashboard/all-projects', label: 'All Projects', roles: ['admin', 'staff-member'] }
       ]
     },
