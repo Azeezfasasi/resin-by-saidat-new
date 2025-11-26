@@ -141,7 +141,6 @@ export default function AddProjectsPage() {
 
   return (
   <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
-    {user?.role === 'admin' || user?.role === 'staff-member' ? (
     <div className="min-h-screen bg-gray-50 py-6 px-0 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -332,7 +331,6 @@ export default function AddProjectsPage() {
         </form>
       </div>
     </div>
-    ) : null}
   </ProtectedRoute>
   )
 }
