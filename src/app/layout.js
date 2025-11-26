@@ -6,8 +6,12 @@ import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 
 export const metadata = {
-  title: 'Rayob Engineering',
-  description: 'Innovative Engineering Solutions for Modern Projects.',
+  title: 'Resin By Saidat',
+  description: 'Your one-stop shop for exquisite resin art and crafts.',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({ children }) {

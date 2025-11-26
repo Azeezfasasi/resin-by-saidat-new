@@ -20,6 +20,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
+    
+    // Remove token from cookie
+    document.cookie = 'token=; path=/; max-age=0';
   }, []);
 
   // Load token from localStorage on mount and fetch profile
@@ -70,6 +73,10 @@ export const AuthProvider = ({ children }) => {
         setToken(data.token);
         setUser(data.user);
         localStorage.setItem("token", data.token);
+        
+        // Store token in cookie for middleware
+        document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}`; // 7 days
+        
         return { success: true };
       }
       return { success: false, message: data.message };
@@ -97,6 +104,10 @@ export const AuthProvider = ({ children }) => {
         setToken(data.token);
         setUser(data.user);
         localStorage.setItem("token", data.token);
+        
+        // Store token in cookie for middleware
+        document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}`; // 7 days
+        
         return { success: true };
       }
       return { success: false, message: data.message };
@@ -139,7 +150,7 @@ export const AuthProvider = ({ children }) => {
     updateProfile,
     isAuthenticated: !!token,
     isAdmin: user?.role === "admin",
-    isClient: user?.role === "client",
+    isCustomer: user?.role === "customer",
     isStaff: user?.role === "staff-member",
   };
 

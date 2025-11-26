@@ -67,8 +67,8 @@ const userSchema = new mongoose.Schema(
     // Authorization
     role: {
       type: String,
-      enum: ["client", "admin", "staff-member"],
-      default: "client",
+      enum: ["customer", "admin", "staff-member"],
+      default: "customer",
     },
     permissions: [
       {
