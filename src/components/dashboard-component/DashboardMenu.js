@@ -65,7 +65,9 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       children: [
         { href: '/dashboard/add-product', label: 'Add Product', roles: ['admin', 'staff-member'] },
         { href: '/dashboard/all-product', label: 'All Products', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/all-category', label: 'Product Categories', roles: ['admin'] }
+        { href: '/dashboard/all-category', label: 'Product Categories', roles: ['admin'] },
+        { href: '/dashboard/add-shipment-location', label: 'Add Shipment Location', roles: ['admin'] },
+        { href: '/dashboard/all-shipment-location', label: 'All Shipment Locations', roles: ['admin'] }
       ]
     },
     {

@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      example: 'ORD-0001'
+      example: 'RS1140231'
     },
 
     // Customer reference
@@ -101,8 +101,8 @@ const orderSchema = new mongoose.Schema(
     // Payment Information
     paymentMethod: {
       type: String,
-      enum: ['card', 'bank', 'wallet'],
-      default: 'card'
+      enum: ['whatsapp', 'bank', 'paystack'],
+      default: 'whatsapp'
     },
 
     paymentDetails: {
@@ -187,15 +187,16 @@ orderSchema.index({ createdAt: -1 });
 
 // Static method to generate order number
 orderSchema.statics.generateOrderNumber = async function () {
-  const lastOrder = await this.findOne().sort({ createdAt: -1 }).select('orderNumber');
-  let num = 1;
+  const lastOrder = await this.findOne().sort({ _id: -1 }).select('orderNumber');
+  let num = 1140231; // Starting number
 
   if (lastOrder && lastOrder.orderNumber) {
-    const numPart = lastOrder.orderNumber.split('-')[1];
+    // Extract number from format like "RS1140231"
+    const numPart = lastOrder.orderNumber.replace(/[^0-9]/g, '');
     num = parseInt(numPart) + 1;
   }
 
-  return `ORD-${num.toString().padStart(4, '0')}`;
+  return `RS${num}`;
 };
 
 // Static method to find orders by customer email

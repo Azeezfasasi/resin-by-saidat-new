@@ -1,17 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, Lock, Truck } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { formatPrice } from '@/lib/productApi';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function CheckoutComponent() {
   const { cart, getCartTotal, clearCart } = useCart();
   const router = useRouter();
 
+  // Initialize state
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,13 +26,44 @@ export default function CheckoutComponent() {
     country: '',
   });
 
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState('whatsapp');
   const [loading, setLoading] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponError, setCouponError] = useState('');
+  const [deliveryLocations, setDeliveryLocations] = useState([]);
+  const [selectedDeliveryLocation, setSelectedDeliveryLocation] = useState('');
+  const [loadingLocations, setLoadingLocations] = useState(true);
+  const [whatsappNumber, setWhatsappNumber] = useState('2348117256648'); // Add your WhatsApp number here
+  const orderNumberRef = useRef(''); // Track order number in ref
+
+  // Fetch delivery locations on mount
+  useEffect(() => {
+    const fetchDeliveryLocations = async () => {
+      try {
+        setLoadingLocations(true);
+        const response = await axios.get('/api/delivery-location?activeOnly=true');
+        setDeliveryLocations(response.data.locations || []);
+        if (response.data.locations && response.data.locations.length > 0) {
+          setSelectedDeliveryLocation(response.data.locations[0]._id);
+        }
+      } catch (error) {
+        console.error('Error fetching delivery locations:', error);
+      } finally {
+        setLoadingLocations(false);
+      }
+    };
+
+    fetchDeliveryLocations();
+  }, []);
+
+  // Track orderNumber in ref for rendering fallback
+  useEffect(() => {
+    orderNumberRef.current = orderNumber;
+  }, [orderNumber]);
 
   if (cart.length === 0 && !orderComplete) {
     return (
@@ -98,6 +131,18 @@ export default function CheckoutComponent() {
     setLoading(true);
 
     try {
+      // Get selected delivery location details
+      const selectedLocation = deliveryLocations.find(loc => loc._id === selectedDeliveryLocation);
+      const shippingCost = selectedLocation ? selectedLocation.shippingCost : 0;
+
+      // Calculate totals
+      const subtotal = getCartTotal();
+      const tax = subtotal * 0.075;
+      const discount = appliedCoupon ? appliedCoupon.discount : 0;
+      const totalAmount = appliedCoupon 
+        ? (subtotal + shippingCost) * 1.075 - discount
+        : (subtotal + shippingCost) * 1.075;
+
       // Prepare order data for backend
       const orderData = {
         customerInfo: {
@@ -123,19 +168,73 @@ export default function CheckoutComponent() {
           quantity: item.quantity,
           image: item.images && item.images[0] ? item.images[0].url : '',
         })),
-        subtotal: getCartTotal(),
-        tax: getCartTotal() * 0.075,
-        shippingCost: 0,
-        totalAmount: appliedCoupon 
-          ? (getCartTotal() * 1.075) - appliedCoupon.discount
-          : getCartTotal() * 1.075,
-        discount: appliedCoupon ? appliedCoupon.discount : 0,
+        subtotal: subtotal,
+        tax: tax,
+        shippingCost: shippingCost,
+        deliveryLocation: selectedDeliveryLocation,
+        totalAmount: totalAmount,
+        discount: discount,
         couponCode: appliedCoupon ? appliedCoupon.code : null,
         paymentStatus: 'pending',
         paymentMethod: paymentMethod,
       };
 
-      // Send to backend API
+      // If WhatsApp payment method, still create order but don't require payment completion
+      if (paymentMethod === 'whatsapp') {
+        try {
+          // First, create the order in the database to get an order number
+          const response = await fetch('/api/order', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            let extractedOrderNumber = data.orderNumber || data.order?.orderNumber;
+            if (extractedOrderNumber) {
+              setOrderNumber(extractedOrderNumber);
+            }
+          }
+        } catch (err) {
+          console.error('Error creating order for WhatsApp:', err);
+        }
+
+        // Format order message for WhatsApp
+        const itemsList = cart.map(item => 
+          `• ${item.name} x${item.quantity} = ₦${((item.salePrice || item.basePrice) * item.quantity).toLocaleString()}`
+        ).join('%0A');
+
+        const whatsappMessage = `*Order from ${formData.firstName} ${formData.lastName}*%0A%0A` +
+          `*Customer Details:*%0A` +
+          `Name: ${formData.firstName} ${formData.lastName}%0A` +
+          `Email: ${formData.email}%0A` +
+          `Phone: ${formData.phone}%0A%0A` +
+          `*Shipping Address:*%0A` +
+          `${formData.address}%0A` +
+          `${formData.city}, ${formData.state} ${formData.zipCode}%0A` +
+          `${formData.country}%0A%0A` +
+          `*Items:*%0A${itemsList}%0A%0A` +
+          `*Subtotal:* ₦${subtotal.toLocaleString()}%0A` +
+          `*Shipping:* ₦${shippingCost.toLocaleString()}%0A` +
+          `*Tax (7.5%):* ₦${tax.toLocaleString()}%0A` +
+          (appliedCoupon ? `*Discount (${appliedCoupon.code}):* -₦${discount.toLocaleString()}%0A` : '') +
+          `*Total Amount:* ₦${totalAmount.toLocaleString()}%0A%0A` +
+          `*Delivery Location:* ${selectedLocation?.name || 'Not selected'}`;
+
+        // Open WhatsApp with pre-filled message
+        const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`;
+        window.open(whatsappUrl, '_blank');
+
+        // Clear cart and show success
+        clearCart();
+        setOrderComplete(true);
+        return;
+      }
+
+      // Send to backend API for other payment methods
       const response = await fetch('/api/order', {
         method: 'POST',
         headers: {
@@ -150,9 +249,17 @@ export default function CheckoutComponent() {
       }
 
       const data = await response.json();
-      console.log('Order created successfully:', data);
 
-      // Clear cart
+      // Extract order number from response
+      let extractedOrderNumber = data.orderNumber || data.order?.orderNumber;
+      
+      // Ensure it has RS prefix
+      if (extractedOrderNumber && !extractedOrderNumber.toString().startsWith('RS')) {
+        extractedOrderNumber = `RS${extractedOrderNumber}`;
+      }
+      
+      setOrderNumber(extractedOrderNumber || 'PENDING');
+      
       clearCart();
       setOrderComplete(true);
     } catch (error) {
@@ -186,8 +293,8 @@ export default function CheckoutComponent() {
 
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-600 mb-2">Order Number</p>
-            <p className="text-xl font-bold text-gray-900">
-              #{Date.now().toString().slice(-8)}
+            <p className="text-3xl font-bold text-blue-600" key={orderNumber}>
+              {orderNumber || orderNumberRef.current || 'Generating...'}
             </p>
           </div>
 
@@ -374,22 +481,80 @@ export default function CheckoutComponent() {
                   />
                 </div>
 
+                {/* Delivery Location */}
+                <div className="border-t border-gray-200 pt-8 mb-8">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Delivery Location</h3>
+                  
+                  {loadingLocations ? (
+                    <div className="flex items-center justify-center py-6">
+                      <div className="animate-spin">
+                        <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                      </div>
+                    </div>
+                  ) : deliveryLocations.length === 0 ? (
+                    <div className="text-center py-6">
+                      <p className="text-gray-600">No delivery locations available</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <select
+                        value={selectedDeliveryLocation}
+                        onChange={(e) => setSelectedDeliveryLocation(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition bg-white"
+                      >
+                        <option value="">-- Select Delivery Location --</option>
+                        {deliveryLocations.map(location => (
+                          <option key={location._id} value={location._id}>
+                            {location.name} - ₦{location.shippingCost.toLocaleString()} ({location.estimatedDays} day{location.estimatedDays !== 1 ? 's' : ''})
+                          </option>
+                        ))}
+                      </select>
+                      
+                      {selectedDeliveryLocation && (
+                        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                          {(() => {
+                            const selectedLocation = deliveryLocations.find(loc => loc._id === selectedDeliveryLocation);
+                            return selectedLocation ? (
+                              <div>
+                                <p className="font-semibold text-gray-900">{selectedLocation.name}</p>
+                                {selectedLocation.description && (
+                                  <p className="text-sm text-gray-600 mt-1">{selectedLocation.description}</p>
+                                )}
+                                <div className="flex gap-4 mt-2 text-sm text-gray-700">
+                                  <span>Cost: ₦{selectedLocation.shippingCost.toLocaleString()}</span>
+                                  <span>Delivery: {selectedLocation.estimatedDays} day{selectedLocation.estimatedDays !== 1 ? 's' : ''}</span>
+                                </div>
+                                {selectedLocation.coverageAreas && selectedLocation.coverageAreas.length > 0 && (
+                                  <p className="text-xs text-gray-600 mt-2">Covers: {selectedLocation.coverageAreas.join(', ')}</p>
+                                )}
+                              </div>
+                            ) : null;
+                          })()}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 {/* Payment Method */}
                 <div className="border-t border-gray-200 pt-8 mb-8">
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Payment Method</h3>
 
                   <div className="space-y-4">
                     <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition"
-                      style={paymentMethod === 'card' ? { borderColor: '#2563eb' } : {}}>
+                      style={paymentMethod === 'whatsapp' ? { borderColor: '#2563eb' } : {}}>
                       <input
                         type="radio"
                         name="payment"
-                        value="card"
-                        checked={paymentMethod === 'card'}
+                        value="whatsapp"
+                        checked={paymentMethod === 'whatsapp'}
                         onChange={(e) => setPaymentMethod(e.target.value)}
                         className="w-4 h-4"
                       />
-                      <span className="ml-3 font-semibold text-gray-900">Credit/Debit Card</span>
+                      <span className="ml-3 font-semibold text-gray-900">WhatsApp</span>
                     </label>
 
                     <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition"
@@ -406,16 +571,16 @@ export default function CheckoutComponent() {
                     </label>
 
                     <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition"
-                      style={paymentMethod === 'wallet' ? { borderColor: '#2563eb' } : {}}>
+                      style={paymentMethod === 'paystack' ? { borderColor: '#2563eb' } : {}}>
                       <input
                         type="radio"
                         name="payment"
-                        value="wallet"
-                        checked={paymentMethod === 'wallet'}
+                        value="paystack"
+                        checked={paymentMethod === 'paystack'}
                         onChange={(e) => setPaymentMethod(e.target.value)}
                         className="w-4 h-4"
                       />
-                      <span className="ml-3 font-semibold text-gray-900">Digital Wallet</span>
+                      <span className="ml-3 font-semibold text-gray-900">Paystack</span>
                     </label>
                   </div>
                 </div>
@@ -437,7 +602,7 @@ export default function CheckoutComponent() {
                   disabled={loading}
                   className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Processing...' : 'Complete Order'}
+                  {loading ? 'Processing...' : (paymentMethod === 'whatsapp' ? 'Order via WhatsApp' : 'Complete Order')}
                 </button>
               </form>
             </div>
@@ -494,7 +659,11 @@ export default function CheckoutComponent() {
                     <Truck size={16} />
                     Shipping
                   </span>
-                  <span className="text-green-600 font-semibold">Free</span>
+                  <span className="font-semibold text-gray-900">
+                    {selectedDeliveryLocation && deliveryLocations.length > 0
+                      ? formatPrice(deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0)
+                      : '₦0'}
+                  </span>
                 </div>
               </div>
 
@@ -504,8 +673,8 @@ export default function CheckoutComponent() {
                 <span className="text-2xl font-bold text-blue-600">
                   {formatPrice(
                     appliedCoupon
-                      ? getCartTotal() * 1.075 - appliedCoupon.discount
-                      : getCartTotal() * 1.075
+                      ? (getCartTotal() + (deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0)) * 1.075 - appliedCoupon.discount
+                      : (getCartTotal() + (deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0)) * 1.075
                   )}
                 </span>
               </div>

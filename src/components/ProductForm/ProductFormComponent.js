@@ -51,7 +51,6 @@ const ProductFormComponent = ({
         name: img.alt || 'product image',
         file: null,
       })) || [],
-      deliveryLocations: initialData.deliveryLocations || [],
     } : {
       name: '',
       slug: '',
@@ -79,7 +78,6 @@ const ProductFormComponent = ({
       status: 'draft',
       images: [],
       previewImages: [],
-      deliveryLocations: [],
     }
   );
 
@@ -91,12 +89,6 @@ const ProductFormComponent = ({
   const [attributeInput, setAttributeInput] = useState({
     name: '',
     value: '',
-  });
-  const [deliveryInput, setDeliveryInput] = useState({
-    locationId: '',
-    name: '',
-    shippingCost: '',
-    estimatedDays: '',
   });
 
   // Fetch categories on mount
@@ -786,95 +778,6 @@ const ProductFormComponent = ({
                       type="button"
                       onClick={() => removeAttribute(attr.id)}
                       className="text-red-500 hover:text-red-700 transition"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Delivery Locations */}
-        <div className="border-t pt-6 md:pt-8">
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
-            Delivery Locations
-          </h2>
-
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-              <input
-                type="text"
-                value={deliveryInput.locationId}
-                onChange={(e) =>
-                  setDeliveryInput({
-                    ...deliveryInput,
-                    locationId: e.target.value,
-                  })
-                }
-                placeholder="Location ID"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
-              />
-              <input
-                type="text"
-                value={deliveryInput.name}
-                onChange={(e) =>
-                  setDeliveryInput({
-                    ...deliveryInput,
-                    name: e.target.value,
-                  })
-                }
-                placeholder="Location Name"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
-              />
-              <input
-                type="number"
-                value={deliveryInput.shippingCost}
-                onChange={(e) =>
-                  setDeliveryInput({
-                    ...deliveryInput,
-                    shippingCost: e.target.value,
-                  })
-                }
-                placeholder="Shipping Cost"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
-              />
-              <input
-                type="number"
-                value={deliveryInput.estimatedDays}
-                onChange={(e) =>
-                  setDeliveryInput({
-                    ...deliveryInput,
-                    estimatedDays: e.target.value,
-                  })
-                }
-                placeholder="Days"
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
-              />
-            </div>
-            <button
-              type="button"
-              onClick={addDeliveryLocation}
-              className="px-3 md:px-4 py-2 bg-[#7b3306] text-white rounded-lg hover:bg-[#4a1e02] transition flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base w-full sm:w-auto"
-            >
-              <Plus size={18} /> Add Delivery Location
-            </button>
-
-            {formData.deliveryLocations.length > 0 && (
-              <div className="space-y-2">
-                {formData.deliveryLocations.map((loc) => (
-                  <div
-                    key={loc.id}
-                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-xs md:text-sm"
-                  >
-                    <span className="text-gray-700 wrap-break-word flex-1">
-                      <strong>{loc.name}</strong> - ₦{loc.shippingCost} ({loc.estimatedDays} days)
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeDeliveryLocation(loc.id)}
-                      className="text-red-500 hover:text-red-700 transition shrink-0 ml-2"
                     >
                       <Trash2 size={16} />
                     </button>

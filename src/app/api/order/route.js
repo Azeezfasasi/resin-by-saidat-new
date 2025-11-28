@@ -90,14 +90,8 @@ export async function POST(request) {
     await connectDB();
     const body = await request.json();
 
-    // Generate unique order number
-    const lastOrder = await Order.findOne().sort({ createdAt: -1 }).select('orderNumber').lean();
-    let orderNumber = 'ORD-0001';
-
-    if (lastOrder && lastOrder.orderNumber) {
-      const num = parseInt(lastOrder.orderNumber.split('-')[1]) + 1;
-      orderNumber = `ORD-${num.toString().padStart(4, '0')}`;
-    }
+    // Generate unique order number using the model's static method
+    const orderNumber = await Order.generateOrderNumber();
 
     const order = await Order.create({
       ...body,
@@ -108,11 +102,18 @@ export async function POST(request) {
       updatedAt: new Date()
     });
 
-    return NextResponse.json({ order }, { status: 201 });
+    // Convert to plain object to ensure serialization
+    const orderData = order.toObject ? order.toObject() : order;
+
+    return NextResponse.json({ 
+      success: true,
+      order: orderData,
+      orderNumber: orderData.orderNumber
+    }, { status: 201 });
   } catch (error) {
     console.error('Error creating order:', error);
     return NextResponse.json(
-      { error: 'Failed to create order', details: error.message },
+      { success: false, error: 'Failed to create order', details: error.message },
       { status: 500 }
     );
   }
