@@ -57,6 +57,19 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
   const items = [
     { href: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['admin', 'customer', 'staff-member'] },
     { href: '/dashboard/order', label: 'Orders', icon: 'dashboard', roles: ['admin', 'staff-member'] },
+    // {
+    //   href: '/dashboard/order',
+    //   label: 'Orders',
+    //   icon: 'projects',
+    //   roles: ['admin', 'staff-member'],
+    //   children: [
+    //     { href: '/dashboard/order', label: 'All Orders', roles: ['admin', 'staff-member'] },
+    //     { href: '/dashboard/order/orderId', label: 'All Products', roles: ['admin', 'staff-member'] },
+    //     { href: '/dashboard/all-category', label: 'Product Categories', roles: ['admin'] },
+    //     { href: '/dashboard/add-shipment-location', label: 'Add Shipment Location', roles: ['admin'] },
+    //     { href: '/dashboard/all-shipment-location', label: 'All Shipment Locations', roles: ['admin'] }
+    //   ]
+    // },
     {
       href: '/dashboard/products',
       label: 'Products',

@@ -43,7 +43,8 @@ export default function MainHeader() {
     { href: '/about-us', label: 'About Us' },
     { href: '/shop', label: 'Shop' },
     { href: '/request-a-quote', label: 'Request a Quote' },
-    { href: '/blog', label: 'Blog' },
+    // { href: '/blog', label: 'Blog' },
+    { href: '/track-order', label: 'Track Order' },
     { href: '/contact-us', label: 'Contact Us' }
   ]
   const pathname = usePathname()
@@ -113,6 +114,7 @@ export default function MainHeader() {
                   { href: '/about-us', label: 'About Us' },
                   { href: '/projects', label: 'Projects' },
                   { href: '/gallery', label: 'Gallery' },
+                  { href: '/blog', label: 'Blog' },
                 ]
 
                 return (
