@@ -69,14 +69,14 @@ export default function DashboardWelcome() {
 
         {user?.role === 'admin' || user?.role === 'staff-member' ? (
           <div className="flex flex-col lg:flex-row md:items-center gap-3">
-            <Link href="/dashboard/add-projects" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-[#7b3306] text-white rounded-md text-sm hover:bg-[#4a1e02] cursor-pointer">
+            <Link href="/dashboard/add-product" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-[#7b3306] text-white rounded-md text-sm hover:bg-[#4a1e02] cursor-pointer">
               <Briefcase />
-              Add Projects
+              Add Products
             </Link>
 
-            <Link href="/dashboard/add-blog" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 border bg-gray-100 border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
+            <Link href="/dashboard/order" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 border bg-gray-100 border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
               <NotepadText />
-              Publish Blog Posts
+              Manage Orders
             </Link>
           </div>
         ) : null}

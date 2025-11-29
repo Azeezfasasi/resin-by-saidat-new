@@ -1,5 +1,6 @@
 import { connectDB } from '@/utils/db';
 import Order from '@/app/server/models/Order';
+import Coupon from '@/app/server/models/Coupon';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
@@ -101,6 +102,20 @@ export async function POST(request) {
       createdAt: new Date(),
       updatedAt: new Date()
     });
+
+    // If coupon code is used, increment its usage count
+    if (body.couponCode) {
+      try {
+        await Coupon.findOneAndUpdate(
+          { code: body.couponCode.toUpperCase() },
+          { $inc: { currentUsage: 1 } },
+          { new: true }
+        );
+      } catch (couponError) {
+        console.error('Error updating coupon usage:', couponError);
+        // Don't fail the order creation if coupon update fails
+      }
+    }
 
     // Convert to plain object to ensure serialization
     const orderData = order.toObject ? order.toObject() : order;

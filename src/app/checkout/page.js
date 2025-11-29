@@ -137,11 +137,11 @@ export default function CheckoutComponent() {
 
       // Calculate totals
       const subtotal = getCartTotal();
-      const tax = subtotal * 0.075;
+      const tax = 0;
       const discount = appliedCoupon ? appliedCoupon.discount : 0;
       const totalAmount = appliedCoupon 
-        ? (subtotal + shippingCost) * 1.075 - discount
-        : (subtotal + shippingCost) * 1.075;
+        ? (subtotal + shippingCost) - discount
+        : (subtotal + shippingCost);
 
       // Prepare order data for backend
       const orderData = {
@@ -219,7 +219,7 @@ export default function CheckoutComponent() {
           `*Items:*%0A${itemsList}%0A%0A` +
           `*Subtotal:* ₦${subtotal.toLocaleString()}%0A` +
           `*Shipping:* ₦${shippingCost.toLocaleString()}%0A` +
-          `*Tax (7.5%):* ₦${tax.toLocaleString()}%0A` +
+          `*Tax:* ₦${tax.toLocaleString()}%0A` +
           (appliedCoupon ? `*Discount (${appliedCoupon.code}):* -₦${discount.toLocaleString()}%0A` : '') +
           `*Total Amount:* ₦${totalAmount.toLocaleString()}%0A%0A` +
           `*Delivery Location:* ${selectedLocation?.name || 'Not selected'}`;
@@ -324,7 +324,7 @@ export default function CheckoutComponent() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/cart" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold">
+          <Link href="/cart" className="flex items-center gap-2 text-amber-900 hover:text-amber-700 font-semibold">
             <ChevronLeft size={20} />
             Back to Cart
           </Link>
@@ -351,7 +351,7 @@ export default function CheckoutComponent() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="John"
                     />
                   </div>
@@ -365,7 +365,7 @@ export default function CheckoutComponent() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="Doe"
                     />
                   </div>
@@ -383,7 +383,7 @@ export default function CheckoutComponent() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -397,7 +397,7 @@ export default function CheckoutComponent() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="+234 (0) 800 0000 000"
                     />
                   </div>
@@ -414,7 +414,7 @@ export default function CheckoutComponent() {
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                     placeholder="123 Main Street"
                   />
                 </div>
@@ -431,7 +431,7 @@ export default function CheckoutComponent() {
                       value={formData.city}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="Lagos"
                     />
                   </div>
@@ -445,7 +445,7 @@ export default function CheckoutComponent() {
                       value={formData.state}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="Lagos"
                     />
                   </div>
@@ -459,7 +459,7 @@ export default function CheckoutComponent() {
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                       placeholder="100001"
                     />
                   </div>
@@ -476,7 +476,7 @@ export default function CheckoutComponent() {
                     value={formData.country}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition"
                     placeholder="Nigeria"
                   />
                 </div>
@@ -488,7 +488,7 @@ export default function CheckoutComponent() {
                   {loadingLocations ? (
                     <div className="flex items-center justify-center py-6">
                       <div className="animate-spin">
-                        <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24">
+                        <svg className="h-6 w-6 text-amber-900" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                         </svg>
@@ -503,7 +503,7 @@ export default function CheckoutComponent() {
                       <select
                         value={selectedDeliveryLocation}
                         onChange={(e) => setSelectedDeliveryLocation(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition bg-white"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-900 outline-none transition bg-white"
                       >
                         <option value="">-- Select Delivery Location --</option>
                         {deliveryLocations.map(location => (
@@ -544,8 +544,8 @@ export default function CheckoutComponent() {
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Payment Method</h3>
 
                   <div className="space-y-4">
-                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition"
-                      style={paymentMethod === 'whatsapp' ? { borderColor: '#2563eb' } : {}}>
+                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-amber-900 transition"
+                      style={paymentMethod === 'whatsapp' ? { borderColor: '#b45309' } : {}}>
                       <input
                         type="radio"
                         name="payment"
@@ -557,8 +557,8 @@ export default function CheckoutComponent() {
                       <span className="ml-3 font-semibold text-gray-900">WhatsApp</span>
                     </label>
 
-                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition"
-                      style={paymentMethod === 'bank' ? { borderColor: '#2563eb' } : {}}>
+                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-amber-900 transition"
+                      style={paymentMethod === 'bank' ? { borderColor: '#b45309' } : {}}>
                       <input
                         type="radio"
                         name="payment"
@@ -570,8 +570,8 @@ export default function CheckoutComponent() {
                       <span className="ml-3 font-semibold text-gray-900">Bank Transfer</span>
                     </label>
 
-                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition"
-                      style={paymentMethod === 'paystack' ? { borderColor: '#2563eb' } : {}}>
+                    <label className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-amber-900 transition"
+                      style={paymentMethod === 'paystack' ? { borderColor: '#b45309' } : {}}>
                       <input
                         type="radio"
                         name="payment"
@@ -583,14 +583,40 @@ export default function CheckoutComponent() {
                       <span className="ml-3 font-semibold text-gray-900">Paystack</span>
                     </label>
                   </div>
+
+                  {/* Bank Details - Show when Bank Transfer is selected */}
+                  {paymentMethod === 'bank' && (
+                    <div className="mt-6 p-6 bg-amber-50 border-2 border-amber-200 rounded-lg">
+                      <h4 className="text-lg font-bold text-amber-900 mb-4">Bank Transfer Details</h4>
+                      <div className="space-y-4">
+                        <div className="bg-white p-4 rounded-lg border border-amber-200">
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Account Name</p>
+                          <p className="text-lg font-bold text-gray-900">Sokoya Saidat</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg border border-amber-200">
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Account Number</p>
+                          <p className="text-lg font-bold text-gray-900 font-mono">8125925447</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg border border-amber-200">
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Bank</p>
+                          <p className="text-lg font-bold text-gray-900">Opay</p>
+                        </div>
+                      </div>
+                      <div className="mt-4 p-3 bg-amber-100 border border-amber-300 rounded-lg">
+                        <p className="text-sm text-amber-900">
+                          <span className="font-semibold">Note:</span> Please transfer the order amount to the account above and include your order number in the transfer description.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Security Info */}
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 flex items-start gap-3">
-                  <Lock className="text-blue-600 shrink-0 mt-1" size={20} />
+                  <Lock className="text-amber-900 shrink-0 mt-1" size={20} />
                   <div>
-                    <p className="font-semibold text-blue-900 mb-1">Your payment is secure</p>
-                    <p className="text-sm text-blue-800">
+                    <p className="font-semibold text-amber-900 mb-1">Your payment is secure</p>
+                    <p className="text-sm text-amber-800">
                       We use SSL encryption to protect your payment information.
                     </p>
                   </div>
@@ -600,7 +626,7 @@ export default function CheckoutComponent() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full bg-amber-900 text-white py-4 rounded-lg hover:bg-amber-800 transition font-semibold text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {loading ? 'Processing...' : (paymentMethod === 'whatsapp' ? 'Order via WhatsApp' : 'Complete Order')}
                 </button>
@@ -645,8 +671,8 @@ export default function CheckoutComponent() {
                   <span>{formatPrice(getCartTotal())}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
-                  <span>Tax (7.5%)</span>
-                  <span>{formatPrice(getCartTotal() * 0.075)}</span>
+                  <span>Tax</span>
+                  <span>{formatPrice(0)}</span>
                 </div>
                 {appliedCoupon && (
                   <div className="flex justify-between text-green-600 font-semibold">
@@ -673,8 +699,8 @@ export default function CheckoutComponent() {
                 <span className="text-2xl font-bold text-blue-600">
                   {formatPrice(
                     appliedCoupon
-                      ? (getCartTotal() + (deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0)) * 1.075 - appliedCoupon.discount
-                      : (getCartTotal() + (deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0)) * 1.075
+                      ? (getCartTotal() + (deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0)) - appliedCoupon.discount
+                      : (getCartTotal() + (deliveryLocations.find(loc => loc._id === selectedDeliveryLocation)?.shippingCost || 0))
                   )}
                 </span>
               </div>
@@ -708,13 +734,13 @@ export default function CheckoutComponent() {
                           setCouponError('');
                         }}
                         placeholder="Enter coupon code"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-900 outline-none"
                       />
                       <button
                         type="button"
                         onClick={applyCoupon}
                         disabled={couponLoading}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium disabled:bg-gray-400"
+                        className="px-4 py-2 bg-amber-900 text-white rounded-lg hover:bg-amber-800 transition text-sm font-medium disabled:bg-gray-400"
                       >
                         {couponLoading ? 'Applying...' : 'Apply'}
                       </button>

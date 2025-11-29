@@ -1,12 +1,3 @@
-// import React from 'react'
-// import CartComponent from '@/components/Cart/CartComponent'
-
-// export default function CartPage() {
-//   return (
-//     <CartComponent />
-//   )
-// }
-
 'use client';
 
 import React from 'react';
@@ -28,7 +19,7 @@ export default function CartComponent() {
           <p className="text-gray-600 mb-8">Add some products to get started!</p>
           <Link
             href="/shop"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+            className="inline-block bg-amber-900 text-white px-8 py-3 rounded-lg hover:bg-amber-800 transition font-semibold"
           >
             Continue Shopping
           </Link>
@@ -70,7 +61,7 @@ export default function CartComponent() {
                   {/* Product Info */}
                   <div className="flex-1">
                     <Link href={`/shop/${item._id}`}>
-                      <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition cursor-pointer">
+                      <h3 className="font-semibold text-gray-900 hover:text-amber-900 transition cursor-pointer">
                         {item.name}
                       </h3>
                     </Link>
@@ -127,7 +118,7 @@ export default function CartComponent() {
             <div className="mt-6">
               <Link
                 href="/shop"
-                className="inline-block text-blue-600 hover:text-blue-700 font-semibold"
+                className="inline-block text-amber-900 hover:text-amber-800 font-semibold"
               >
                 ← Continue Shopping
               </Link>
@@ -149,24 +140,20 @@ export default function CartComponent() {
                   <span>Shipping</span>
                   <span className="text-green-600 font-semibold">Free</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Tax (estimated)</span>
-                  <span>{formatPrice(getCartTotal() * 0.075)}</span>
-                </div>
               </div>
 
               {/* Total */}
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xl font-bold text-gray-900">Total</span>
-                <span className="text-2xl font-bold text-blue-600">
-                  {formatPrice(getCartTotal() * 1.075)}
+                <span className="text-2xl font-bold text-amber-900">
+                  {formatPrice(getCartTotal())}
                 </span>
               </div>
 
               {/* Checkout Button */}
               <Link
                 href="/checkout"
-                className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition font-semibold mb-3"
+                className="block w-full bg-amber-900 text-white text-center py-3 rounded-lg hover:bg-amber-800 transition font-semibold mb-3"
               >
                 Proceed to Checkout
               </Link>
