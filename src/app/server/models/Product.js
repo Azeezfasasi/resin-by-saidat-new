@@ -187,11 +187,15 @@ const productSchema = new mongoose.Schema({
     unique: true,
     sparse: true,
     trim: true,
+    default: null,
+    set: (v) => v === '' ? null : v, // Convert empty string to null
   },
   barcode: {
     type: String,
     unique: true,
     sparse: true,
+    default: null,
+    set: (v) => v === '' ? null : v, // Convert empty string to null
   },
 
   // Media/Images

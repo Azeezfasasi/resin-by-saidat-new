@@ -117,8 +117,8 @@ export const createProduct = async (req) => {
       basePrice: parseFloat(basePrice),
       stock: parseInt(stock),
       lowStockThreshold: lowStockThreshold ? parseInt(lowStockThreshold) : 10,
-      sku: sku ? sku.trim() : undefined,
-      barcode: barcode ? barcode.trim() : undefined,
+      sku: sku && sku.trim() ? sku.trim() : null, // Set to null if empty
+      barcode: barcode && barcode.trim() ? barcode.trim() : null, // Set to null if empty
       attributes,
       deliveryLocations,
       weight,
@@ -374,6 +374,16 @@ export const updateProduct = async (req) => {
     delete updates.createdBy;
     delete updates.createdAt;
     delete updates.slug;
+
+    // Handle empty SKU - set to null instead of empty string to avoid unique index conflict
+    if (updates.sku === '' || updates.sku === null || updates.sku === undefined) {
+      updates.sku = null;
+    }
+
+    // Handle empty barcode - set to null instead of empty string
+    if (updates.barcode === '' || updates.barcode === null || updates.barcode === undefined) {
+      updates.barcode = null;
+    }
 
     // Add updatedBy
     if (req.user?.id) {
