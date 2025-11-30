@@ -112,9 +112,9 @@ export default function SearchBar() {
   };
 
   return (
-    <div ref={searchRef} className="relative w-full mx-auto bg-white/60 backdrop-blur-sm border-b border-gray-100 top-0 z-50 shadow-md">
+    <div ref={searchRef} className="relative w-full mx-auto bg-white/60 backdrop-blur-sm border-b border-gray-100 top-0 z-50 shadow-md py-2 px-3 lg:px-0">
       {/* Search Input */}
-      <div className="relative mx-auto w-full max-w-xl">
+      <div className="relative mx-auto w-full max-w-xl bg-white rounded-lg">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
         <input
           type="text"
@@ -129,7 +129,7 @@ export default function SearchBar() {
           onKeyDown={(e) => {
             if (e.key === 'Enter') setShowResults(true);
           }}
-          className="w-full pl-10 pr-10 py-2 md:py-3 border-2 border-gray-300 rounded-lg focus:border-[#7b3306] focus:ring-2 focus:ring-[#7b3306]/10 outline-none transition text-sm md:text-base"
+          className="w-full pl-10 pr-10 py-2 md:py-3 border-2 border-gray-300 rounded-lg focus:border-[#7b3306] focus:ring-2 focus:ring-[#7b3306]/10 outline-none transition text-sm md:text-base text-amber-800"
         />
         {searchQuery && (
           <button
@@ -143,7 +143,7 @@ export default function SearchBar() {
 
       {/* Search Results Dropdown */}
       {showResults && searchQuery.trim().length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto max-w-xl mx-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto max-w-[95%] lg:max-w-xl mx-auto">
           {isLoadingProducts ? (
             <div className="py-8 px-4 text-center flex flex-col items-center gap-2">
               <Loader size={24} className="text-[#7b3306] animate-spin" />
