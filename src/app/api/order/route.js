@@ -2,7 +2,9 @@ import { connectDB } from '@/utils/db';
 import Order from '@/app/server/models/Order';
 import Coupon from '@/app/server/models/Coupon';
 import { NextResponse } from 'next/server';
+import { sendOrderConfirmationEmail, sendAdminOrderNotification } from '@/app/server/utils/orderEmailService';
 
+// Get list of orders with filtering, sorting, and pagination
 export async function GET(request) {
   try {
     await connectDB();
@@ -86,6 +88,7 @@ export async function GET(request) {
   }
 }
 
+// Create a new order
 export async function POST(request) {
   try {
     await connectDB();
@@ -120,10 +123,27 @@ export async function POST(request) {
     // Convert to plain object to ensure serialization
     const orderData = order.toObject ? order.toObject() : order;
 
+    // Send confirmation emails asynchronously (don't wait for them)
+    try {
+      // Send customer confirmation email
+      sendOrderConfirmationEmail(orderData).catch((error) => {
+        console.error('Failed to send customer confirmation email:', error);
+      });
+
+      // Send admin notification email
+      sendAdminOrderNotification(orderData).catch((error) => {
+        console.error('Failed to send admin notification email:', error);
+      });
+    } catch (emailError) {
+      // Don't fail the order if email sending fails
+      console.error('Error sending order emails:', emailError);
+    }
+
     return NextResponse.json({ 
       success: true,
       order: orderData,
-      orderNumber: orderData.orderNumber
+      orderNumber: orderData.orderNumber,
+      message: 'Order created successfully. Confirmation email sent.'
     }, { status: 201 });
   } catch (error) {
     console.error('Error creating order:', error);

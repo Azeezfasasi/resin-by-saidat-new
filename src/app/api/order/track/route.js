@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/utils/db';
 import Order from '@/app/server/models/Order';
 
+// Track order by order number and email
 export async function GET(request) {
   try {
     await connectDB();
