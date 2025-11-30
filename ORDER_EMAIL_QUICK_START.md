@@ -3,14 +3,18 @@
 ## ✅ What Has Been Set Up
 
 ### 1. **Email Templates** (`emailTemplates.js`)
+
 Beautiful, responsive HTML email templates for:
+
 - ✅ Order confirmation (customer)
 - ✅ Order status updates (customer)
 - ✅ New order alerts (admin)
 - ✅ Order update notifications (admin)
 
 ### 2. **Email Service** (`orderEmailService.js`)
+
 Complete email sending functionality:
+
 - ✅ Send order confirmation to customer
 - ✅ Send new order alert to admin
 - ✅ Send status update email to customer
@@ -19,13 +23,16 @@ Complete email sending functionality:
 - ✅ Email retry functionality
 
 ### 3. **API Integration**
+
 Updated order endpoints:
+
 - ✅ POST `/api/order` - Creates order + sends confirmation emails
 - ✅ PATCH `/api/order/[orderId]` - Updates order + sends status update emails
 
 ## 🚀 How to Use
 
 ### When Creating an Order
+
 ```javascript
 // POST /api/order
 {
@@ -54,11 +61,13 @@ Updated order endpoints:
 ```
 
 **Automatically:**
+
 - ✅ Order saved to database
 - ✅ Confirmation email sent to customer
 - ✅ New order alert sent to admin
 
 ### When Updating an Order
+
 ```javascript
 // PATCH /api/order/[orderId]
 {
@@ -73,6 +82,7 @@ Updated order endpoints:
 ```
 
 **Automatically:**
+
 - ✅ Order updated in database
 - ✅ Status update email sent to customer
 - ✅ Status update notification sent to admin
@@ -80,11 +90,13 @@ Updated order endpoints:
 ## 📧 Email Recipients
 
 ### Customer Emails
+
 - **From:** info@resinbysaidat.com.ng
 - **To:** Customer email (from order)
 - **When:** On order creation and status updates
 
 ### Admin Emails
+
 - **From:** info@resinbysaidat.com.ng
 - **To:** Admin email (ADMIN_NOTIFICATION_EMAIL env var)
 - **When:** On new orders and order updates
@@ -105,16 +117,17 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 
 ## 📊 Email Types & When They're Sent
 
-| Email Type | Recipient | Trigger | Status |
-|-----------|-----------|---------|--------|
-| **Order Confirmation** | Customer | Order created | ✅ Auto-sent |
-| **New Order Alert** | Admin | Order created | ✅ Auto-sent |
-| **Status Update** | Customer | Status changed OR tracking added | ✅ Auto-sent |
-| **Update Notification** | Admin | Any order change | ✅ Auto-sent |
+| Email Type              | Recipient | Trigger                          | Status       |
+| ----------------------- | --------- | -------------------------------- | ------------ |
+| **Order Confirmation**  | Customer  | Order created                    | ✅ Auto-sent |
+| **New Order Alert**     | Admin     | Order created                    | ✅ Auto-sent |
+| **Status Update**       | Customer  | Status changed OR tracking added | ✅ Auto-sent |
+| **Update Notification** | Admin     | Any order change                 | ✅ Auto-sent |
 
 ## 🧪 Testing in Your Dashboard
 
 ### Test Scenario 1: Place an Order
+
 1. Go to checkout
 2. Fill in customer details
 3. Place order
@@ -123,6 +136,7 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
    - ✅ Admin notification received by admin
 
 ### Test Scenario 2: Update Order Status
+
 1. Go to `/dashboard/order`
 2. Click edit order
 3. Change status to "shipped"
@@ -159,6 +173,7 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 ## 🎨 Email Template Features
 
 ### Responsive Design
+
 - ✅ Looks great on desktop, tablet, and mobile
 - ✅ Professional branding with your company colors
 - ✅ Easy to read font and spacing
@@ -166,6 +181,7 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 ### Information Included
 
 **Confirmation Email:**
+
 - Order number and date
 - Customer details
 - Complete item list with prices
@@ -175,6 +191,7 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 - Next steps
 
 **Status Update Email:**
+
 - Order number
 - New status with color coding
 - Status-specific message
@@ -182,6 +199,7 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 - Expected delivery date
 
 **Admin Emails:**
+
 - Comprehensive order details
 - Customer contact info
 - Shipping address
@@ -192,12 +210,14 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 ## ⚙️ How Emails Are Sent
 
 ### Process
+
 1. **Async Delivery** - Emails are sent in the background
 2. **Non-Blocking** - API response doesn't wait for emails
 3. **Error Handling** - Email failures don't break order operations
 4. **Rate Limiting** - Built-in delays prevent API throttling
 
 ### Performance
+
 - ✅ Order API responds immediately
 - ✅ Emails sent within 2-5 seconds
 - ✅ Reliable delivery with Brevo
@@ -208,24 +228,32 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 If you need to customize emails later:
 
 ### Change Email Subject Lines
+
 File: `src/app/server/utils/orderEmailService.js`
+
 ```javascript
 subject: `Custom Subject - Order #${order.orderNumber}`,
 ```
 
 ### Modify Email Colors
+
 File: `src/app/server/utils/emailTemplates.js`
+
 ```javascript
 .header { background-color: #YourColor; }
 ```
 
 ### Add Custom Information
+
 File: `src/app/server/utils/emailTemplates.js`
+
 - Add new fields in the HTML template
 - Reference order data like `${order.customerInfo.email}`
 
 ### Change Email Tags
+
 File: `src/app/server/utils/orderEmailService.js`
+
 ```javascript
 tags: ['your-tag', order.orderNumber],
 ```
@@ -235,30 +263,36 @@ tags: ['your-tag', order.orderNumber],
 ### Problem: Emails Not Being Sent
 
 **Solution 1:** Check console logs
+
 - Look for ✓ (success) or ✗ (failure) messages
 - Console will show detailed error messages
 
 **Solution 2:** Verify Brevo API Key
+
 ```javascript
-import { verifyBrevoApiKey } from '@/app/server/utils/brevoEmailService';
+import { verifyBrevoApiKey } from "@/app/server/utils/brevoEmailService";
 const result = await verifyBrevoApiKey();
 console.log(result); // Should return true
 ```
 
 **Solution 3:** Check Email Configuration
+
 ```env
 ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 ```
+
 - Must be a valid email address
 - Should be configured in your Brevo account
 
 ### Problem: Emails Look Wrong
 
 **Solution 1:** Check email client
+
 - Different clients render CSS differently
 - Try opening in different email provider (Gmail, Outlook, etc.)
 
 **Solution 2:** Test with simple email
+
 - Create a test order to verify basic email works
 - Check if images are loading
 - Verify formatting
@@ -266,6 +300,7 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 ## 📞 Support
 
 ### Check Email Logs
+
 ```javascript
 // In browser console when creating order
 ✓ Order confirmation email sent to customer@example.com
@@ -273,10 +308,11 @@ ADMIN_NOTIFICATION_EMAIL=info@resinbysaidat.com.ng
 ```
 
 ### Manual Email Retry
-```javascript
-import { retrySendOrderConfirmation } from '@/app/server/utils/orderEmailService';
 
-await retrySendOrderConfirmation('RS1140231', orderData);
+```javascript
+import { retrySendOrderConfirmation } from "@/app/server/utils/orderEmailService";
+
+await retrySendOrderConfirmation("RS1140231", orderData);
 ```
 
 ## ✅ Verification Checklist
@@ -294,6 +330,7 @@ await retrySendOrderConfirmation('RS1140231', orderData);
 ## 🎉 Summary
 
 Your order email system is now:
+
 - ✅ **Fully Automated** - Emails send automatically
 - ✅ **Production Ready** - Error handling and logging included
 - ✅ **Professional** - Beautiful HTML templates
