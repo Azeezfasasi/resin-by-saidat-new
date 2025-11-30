@@ -12,6 +12,7 @@ import ShopByCategory from '@/components/home-component/ShopByCategory'
 import TopSellingItems from '@/components/home-component/TopSellingItems'
 import FeaturedProducts from '@/components/home-component/FeaturedProducts'
 import ShopByProducts from '@/components/home-component/ShopByProducts'
+import ProductSearch from '@/components/home-component/ProductSearch'
 
 export default function HomePage() {
   return (

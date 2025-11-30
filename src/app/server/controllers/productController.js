@@ -185,7 +185,16 @@ export const getProduct = async (req) => {
       }, { status: 400 });
     }
 
-    const product = await Product.findById(id);
+    // Try to find by ObjectId first, then by slug
+    let product = null;
+    
+    // Check if id is a valid MongoDB ObjectId
+    if (/^[0-9a-fA-F]{24}$/.test(id)) {
+      product = await Product.findById(id);
+    } else {
+      // If not a valid ObjectId, search by slug
+      product = await Product.findOne({ slug: id });
+    }
 
     if (!product) {
       return NextResponse.json({

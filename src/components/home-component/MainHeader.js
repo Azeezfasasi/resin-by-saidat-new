@@ -293,6 +293,7 @@ export default function MainHeader() {
                     { href: '/about-us', label: 'About Us' },
                     { href: '/projects', label: 'Projects' },
                     { href: '/gallery', label: 'Gallery' },
+                    { href: '/training-register', label: 'Training Registration' },
                   ]
 
                   return (
