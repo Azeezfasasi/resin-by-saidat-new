@@ -187,15 +187,13 @@ const productSchema = new mongoose.Schema({
     unique: true,
     sparse: true,
     trim: true,
-    default: null,
-    set: (v) => v === '' ? null : v, // Convert empty string to null
+    index: { unique: true, sparse: true },
   },
   barcode: {
     type: String,
     unique: true,
     sparse: true,
-    default: null,
-    set: (v) => v === '' ? null : v, // Convert empty string to null
+    index: { unique: true, sparse: true },
   },
 
   // Media/Images
@@ -325,7 +323,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // Indexes for performance
-productSchema.index({ slug: 1 });
+// Note: slug already has unique: true in field definition, don't duplicate it here
 productSchema.index({ category: 1 });
 productSchema.index({ featured: 1, isDeleted: 1 });
 productSchema.index({ status: 1, isDeleted: 1 });
@@ -352,6 +350,32 @@ productSchema.virtual('stockStatus').get(function() {
   if (this.stock === 0) return 'out-of-stock';
   if (this.stock <= this.lowStockThreshold) return 'low-stock';
   return 'in-stock';
+});
+
+// Middleware: Auto-generate SKU and Barcode if not provided
+productSchema.pre('save', function(next) {
+  // Auto-generate SKU from product name and ID if not provided
+  if (!this.sku || this.sku === null || this.sku === '') {
+    const nameSlug = this.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .substring(0, 10);
+    const timestamp = Date.now().toString().slice(-6);
+    const id = this._id ? this._id.toString().slice(-4) : '0000';
+    this.sku = `${nameSlug}-${timestamp}-${id}`.toUpperCase();
+  }
+
+  // Auto-generate Barcode if not provided (similar pattern)
+  if (!this.barcode || this.barcode === null || this.barcode === '') {
+    const timestamp = Date.now().toString();
+    const id = this._id ? this._id.toString() : '000000000000000000000000';
+    // Create a 12-digit barcode (like EAN-12)
+    this.barcode = (timestamp + id).slice(-12);
+  }
+
+  next();
 });
 
 // Middleware: Auto-generate slug

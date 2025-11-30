@@ -441,16 +441,18 @@ const ProductFormComponent = ({
             {/* SKU */}
             <div>
               <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
-                SKU
+                SKU <span className='text-xs md:text-sm text-green-700 font-normal'>(Auto-generated)</span>
               </label>
               <input
                 type="text"
                 name="sku"
                 value={formData.sku}
                 onChange={handleInputChange}
-                placeholder="Stock Keeping Unit"
-                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition"
+                placeholder="Auto-generated from product name"
+                readOnly
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
               />
+              <p className="text-xs text-gray-500 mt-1">Auto-generated when you create the product</p>
             </div>
           </div>
 
@@ -623,16 +625,18 @@ const ProductFormComponent = ({
             {/* Barcode */}
             <div>
               <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
-                Barcode
+                Barcode <span className='text-xs md:text-sm text-green-700 font-normal'>(Auto-generated)</span>
               </label>
               <input
                 type="text"
                 name="barcode"
                 value={formData.barcode}
                 onChange={handleInputChange}
-                placeholder="Optional barcode"
-                className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7b3306] outline-none transition text-sm"
+                placeholder="Auto-generated barcode"
+                readOnly
+                className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
               />
+              <p className="text-xs text-gray-500 mt-1">Auto-generated when you create the product</p>
             </div>
           </div>
         </div>
