@@ -8,6 +8,7 @@ import { getProductById, formatPrice, calculateDiscount, getAverageRating } from
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useRouter } from 'next/navigation';
+import RecentlyViewedProducts from '@/components/home-component/RecentlyViewedProducts';
 
 export default function ProductDetailsComponent({ params }) {
   const resolvedParams = use(params);
@@ -51,6 +52,33 @@ export default function ProductDetailsComponent({ params }) {
         const response = await getProductById(productId);
         setProduct(response.product);
         setError(null);
+
+        // Track recently viewed product
+        if (response.product) {
+          const RECENTLY_VIEWED_KEY = 'recentlyViewedProducts';
+          const stored = localStorage.getItem(RECENTLY_VIEWED_KEY);
+          let recentProducts = [];
+
+          if (stored) {
+            try {
+              recentProducts = JSON.parse(stored);
+            } catch (e) {
+              console.error('Failed to parse recently viewed products:', e);
+              recentProducts = [];
+            }
+          }
+
+          // Remove if already exists, then add to front
+          recentProducts = recentProducts.filter(
+            (p) => (p._id || p.slug) !== (response.product._id || response.product.slug)
+          );
+          recentProducts.unshift(response.product);
+
+          // Keep only last 20 viewed products
+          recentProducts = recentProducts.slice(0, 20);
+
+          localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(recentProducts));
+        }
       } catch (err) {
         console.error('Error fetching product:', err);
         setError('Failed to load product details');
@@ -199,6 +227,7 @@ export default function ProductDetailsComponent({ params }) {
   const cartQuantity = getCartQuantity(product._id);
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       {/* Fullscreen Image Modal */}
       {showFullscreenModal && product.images && (
@@ -708,5 +737,7 @@ export default function ProductDetailsComponent({ params }) {
         </div>
       </div>
     </div>
+    <RecentlyViewedProducts />
+    </>
   );
 }

@@ -24,8 +24,8 @@ export default function HomeAbout() {
             <div className="relative w-full h-64 md:h-80 lg:h-135 rounded-2xl overflow-hidden shadow-2xl hover:shadow-lg transition duration-300">
               <Image
                 src="/images/saidat2.jpeg" 
-                alt="Resin by Saidat Artisan"
-    px            fill
+                alt="Resin by Saidat Artisan"          
+                fill
                 sizes='100%'
                 className="object-cover group-hover:scale-105 transition duration-500"
               />
