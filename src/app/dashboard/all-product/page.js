@@ -456,7 +456,15 @@ const AllProductsPage = () => {
                   className="bg-white rounded-lg shadow-sm border border-gray-200 p-4"
                 >
                   <div className="flex gap-3 mb-4">
-                    {product.thumbnail ? (
+                    {product.images && product.images.length > 0 ? (
+                      <Image
+                        src={product.images[0].url}
+                        alt={product.name}
+                        width={60}
+                        height={60}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    ) : product.thumbnail ? (
                       <Image
                         src={product.thumbnail}
                         alt={product.name}
