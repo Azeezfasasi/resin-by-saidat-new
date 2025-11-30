@@ -45,12 +45,13 @@ const ProductFormComponent = ({
       attributes: initialData.attributes || [],
       featured: initialData.featured || false,
       status: initialData.status || 'draft',
-      images: initialData.images || [],
-      previewImages: (initialData.images || []).map(img => ({
+      existingImages: (initialData.images || []).map(img => ({
         url: img.url,
         name: img.alt || 'product image',
-        file: null,
+        publicId: img.publicId,
+        isExisting: true,
       })) || [],
+      newImages: [],
     } : {
       name: '',
       slug: '',
@@ -76,8 +77,8 @@ const ProductFormComponent = ({
       attributes: [],
       featured: false,
       status: 'draft',
-      images: [],
-      previewImages: [],
+      existingImages: [],
+      newImages: [],
     }
   );
 
@@ -173,18 +174,26 @@ const ProductFormComponent = ({
 
     setUploadingImages(true);
 
-    // Preview images immediately
+    // Create previews for new images
     const newPreviews = files.map((file) => ({
       url: URL.createObjectURL(file),
       name: file.name,
       file,
+      isExisting: false,
     }));
 
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ...files],
-      previewImages: [...prev.previewImages, ...newPreviews],
-    }));
+    setFormData((prev) => {
+      // Add new files to newImages array
+      const updatedNewImages = [...prev.newImages, ...files];
+      // Add new previews to existingImages for display
+      const updatedExistingImages = [...prev.existingImages, ...newPreviews];
+      
+      return {
+        ...prev,
+        newImages: updatedNewImages,
+        existingImages: updatedExistingImages,
+      };
+    });
 
     setUploadingImages(false);
     fileInputRef.current.value = '';
@@ -192,11 +201,24 @@ const ProductFormComponent = ({
 
   // Remove image
   const removeImage = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      previewImages: prev.previewImages.filter((_, i) => i !== index),
-      images: prev.images.filter((_, i) => i !== index),
-    }));
+    setFormData((prev) => {
+      const existingImages = [...prev.existingImages];
+      const removedImage = existingImages[index];
+      
+      existingImages.splice(index, 1);
+      
+      // If it's a new image (not existing), remove from newImages too
+      let newImages = [...prev.newImages];
+      if (!removedImage.isExisting && removedImage.file) {
+        newImages = newImages.filter(img => img !== removedImage.file);
+      }
+      
+      return {
+        ...prev,
+        existingImages,
+        newImages,
+      };
+    });
   };
 
   // Add attribute
@@ -292,7 +314,7 @@ const ProductFormComponent = ({
 
     // Add text fields
     Object.keys(formData).forEach((key) => {
-      if (key !== 'images' && key !== 'previewImages') {
+      if (key !== 'existingImages' && key !== 'newImages') {
         if (typeof formData[key] === 'object') {
           submitData.append(key, JSON.stringify(formData[key]));
         } else {
@@ -301,9 +323,22 @@ const ProductFormComponent = ({
       }
     });
 
-    // Add images
-    formData.images.forEach((image) => {
+    // Add existing images data (for the backend to keep them)
+    const existingImageIds = formData.existingImages
+      .filter(img => img.isExisting)
+      .map(img => ({
+        url: img.url,
+        publicId: img.publicId,
+      }));
+    if (existingImageIds.length > 0) {
+      submitData.append('existingImages', JSON.stringify(existingImageIds));
+    }
+
+    // Add new images files - log to verify
+    console.log('Submitting new images:', formData.newImages.length);
+    formData.newImages.forEach((image, index) => {
       if (image instanceof File) {
+        console.log(`Adding image ${index}:`, image.name);
         submitData.append('images', image);
       }
     });
@@ -837,9 +872,9 @@ const ProductFormComponent = ({
             </div>
 
             {/* Image Preview Grid */}
-            {formData.previewImages.length > 0 && (
+            {formData.existingImages.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                {formData.previewImages.map((image, index) => (
+                {formData.existingImages.map((image, index) => (
                   <div
                     key={index}
                     className="relative group rounded-lg overflow-hidden bg-gray-100"
@@ -851,13 +886,20 @@ const ProductFormComponent = ({
                       height={150}
                       className="w-full h-32 md:h-40 object-cover"
                     />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition"
-                    >
-                      <X className="text-white" size={20} />
-                    </button>
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="flex items-center justify-center"
+                      >
+                        <X className="text-white" size={20} />
+                      </button>
+                    </div>
+                    {image.isExisting && (
+                      <span className="absolute top-1 right-1 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                        Existing
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>

@@ -347,8 +347,22 @@ export const updateProduct = async (req) => {
 
     // Parse form data
     const updates = {};
+    const imageFiles = [];
+    
     for (const [key, value] of formData) {
-      if (key === 'images' || key === 'attributes' || key === 'deliveryLocations' || key === 'weight' || key === 'dimensions') {
+      if (key === 'images') {
+        // Collect image files
+        if (value instanceof File) {
+          imageFiles.push(value);
+        }
+      } else if (key === 'existingImages') {
+        // Keep existing images
+        try {
+          updates.images = JSON.parse(value);
+        } catch {
+          updates.images = [];
+        }
+      } else if (key === 'attributes' || key === 'deliveryLocations' || key === 'weight' || key === 'dimensions') {
         try {
           if (value instanceof File) continue; // Skip file objects
           updates[key] = JSON.parse(value);
@@ -356,7 +370,7 @@ export const updateProduct = async (req) => {
           updates[key] = value;
         }
       } else if (value instanceof File) {
-        continue; // Skip file uploads for now
+        continue; // Skip other file uploads
       } else {
         updates[key] = value;
       }
@@ -397,6 +411,48 @@ export const updateProduct = async (req) => {
     // Add updatedBy
     if (req.user?.id) {
       updates.updatedBy = req.user.id;
+    }
+
+    // Handle new image uploads
+    if (imageFiles.length > 0) {
+      const uploadedImages = [];
+      
+      for (const file of imageFiles) {
+        try {
+          const bytes = await file.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          
+          // Upload to Cloudinary
+          const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              {
+                folder: 'products',
+                resource_type: 'auto',
+              },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+            stream.end(buffer);
+          });
+          
+          uploadedImages.push({
+            url: result.secure_url,
+            publicId: result.public_id,
+            alt: file.name.replace(/\.[^/.]+$/, ''),
+          });
+        } catch (uploadError) {
+          console.error('Image upload error:', uploadError);
+        }
+      }
+      
+      // Add new images to existing ones
+      if (uploadedImages.length > 0) {
+        updates.images = Array.isArray(updates.images) 
+          ? [...updates.images, ...uploadedImages]
+          : uploadedImages;
+      }
     }
 
     const product = await Product.findByIdAndUpdate(
