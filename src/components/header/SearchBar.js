@@ -112,7 +112,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div ref={searchRef} className="relative w-full mx-auto bg-white/60 backdrop-blur-sm border-b border-gray-100 top-0 z-50 shadow-md py-2 px-3 lg:px-0">
+    <div ref={searchRef} className="relative w-full mx-auto bg-white/60 backdrop-blur-sm border-b border-gray-100 top-0 z-10 shadow-md py-2 px-3 lg:px-0">
       {/* Search Input */}
       <div className="relative mx-auto w-full max-w-xl bg-white rounded-lg">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
