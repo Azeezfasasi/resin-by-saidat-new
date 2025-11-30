@@ -318,7 +318,15 @@ const AllProductsPage = () => {
                       {/* Product */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          {product.thumbnail ? (
+                          {product.images && product.images.length > 0 ? (
+                            <Image
+                              src={product.images[0].url}
+                              alt={product.name}
+                              width={40}
+                              height={40}
+                              className="w-10 h-10 object-cover rounded"
+                            />
+                          ) : product.thumbnail ? (
                             <Image
                               src={product.thumbnail}
                               alt={product.name}
