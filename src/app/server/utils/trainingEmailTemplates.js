@@ -386,7 +386,7 @@ export const trainingConfirmationEmailTemplate = (registration) => {
             <h3 style="color: #2196f3; margin-top: 0;">Next Steps:</h3>
             <ol>
               <li><strong>Payment:</strong> Transfer the training fee of ₦${registration.paymentAmount?.toLocaleString() || 'TBD'} to confirm your spot</li>
-              <li><strong>Training Materials:</strong> You'll receive training materials via email 48 hours before the session</li>
+              <li><strong>Training Materials:</strong> You'll be add to the Telegram group and also receive training materials via email 48 hours before the session</li>
               <li><strong>Session Reminders:</strong> Expect reminder emails 24 hours and 1 hour before the training begins</li>
               <li><strong>Confirmation Link:</strong> You'll receive a confirmation link to join the training session</li>
             </ol>
