@@ -148,7 +148,7 @@ export const sendOrderEmail = async (orderId, templateType = 'confirmation') => 
 export const formatPrice = (price) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'NGN'
   }).format(price);
 };
 
