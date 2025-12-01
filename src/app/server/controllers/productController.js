@@ -245,16 +245,26 @@ export const getProducts = async (req) => {
     const search = searchParams.get('search');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
+    const isDeleted = searchParams.get('isDeleted');
 
     const pageNum = Math.max(1, parseInt(page));
     const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
     const skip = (pageNum - 1) * limitNum;
 
     // Build filter
-    const filter = { isDeleted: false };
+    const filter = {};
+
+    // Handle isDeleted filter
+    if (isDeleted === 'true') {
+      filter.isDeleted = true;
+    } else if (isDeleted === 'false') {
+      filter.isDeleted = false;
+    } else {
+      filter.isDeleted = false; // Default to non-deleted
+    }
 
     // Only show published products for non-admin users
-    if (status) {
+    if (status && isDeleted !== 'true') {
       filter.status = status;
     }
 
@@ -535,12 +545,11 @@ export const deleteProduct = async (req) => {
  * RESTORE PRODUCT (Undo Soft Delete)
  * POST /api/product/[id]/restore
  */
-export const restoreProduct = async (req) => {
+export const restoreProduct = async (req, params) => {
   try {
     await connectDB();
 
-    const url = new URL(req.url);
-    const id = url.pathname.split('/')[4]; // /api/product/[id]/restore
+    const id = params?.id;
 
     if (!id) {
       return NextResponse.json({

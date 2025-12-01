@@ -44,8 +44,12 @@ const AllProductsPage = () => {
       setLoading(true);
       let url = '/api/product?limit=100';
 
-      if (filterStatus !== 'all') {
-        url += `&status=${filterStatus}`;
+      if (filterStatus === 'deleted') {
+        url += '&isDeleted=true';
+      } else if (filterStatus !== 'all') {
+        url += `&isDeleted=false&status=${filterStatus}`;
+      } else {
+        url += '&isDeleted=false';
       }
 
       const response = await fetch(url);
@@ -146,10 +150,18 @@ const AllProductsPage = () => {
 
   // Calculate statistics
   const stats = {
-    total: products.length,
-    published: products.filter((p) => p.status === 'published').length,
-    draft: products.filter((p) => p.status === 'draft').length,
-    lowStock: products.filter((p) => p.stock <= p.lowStockThreshold).length,
+    total: filterStatus === 'deleted' 
+      ? products.filter((p) => p.isDeleted).length
+      : products.filter((p) => !p.isDeleted).length,
+    published: filterStatus === 'deleted'
+      ? 0
+      : products.filter((p) => !p.isDeleted && p.status === 'published').length,
+    draft: filterStatus === 'deleted'
+      ? 0
+      : products.filter((p) => !p.isDeleted && p.status === 'draft').length,
+    lowStock: filterStatus === 'deleted'
+      ? 0
+      : products.filter((p) => !p.isDeleted && p.stock <= p.lowStockThreshold).length,
   };
 
   const clearAlert = () => {
@@ -167,7 +179,7 @@ const AllProductsPage = () => {
     <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20">
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -178,7 +190,7 @@ const AllProductsPage = () => {
             </div>
             <Link
               href="/dashboard/add-product"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-amber-800 text-white rounded-lg hover:bg-amber-900 transition font-medium"
             >
               <Plus size={20} /> Add Product
             </Link>
@@ -263,6 +275,7 @@ const AllProductsPage = () => {
                 <option value="published">Published</option>
                 <option value="draft">Drafts</option>
                 <option value="scheduled">Scheduled</option>
+                <option value="deleted">Deleted Products</option>
               </select>
             </div>
           </div>
@@ -417,29 +430,41 @@ const AllProductsPage = () => {
                       {/* Actions */}
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-2">
-                          <button
-                            onClick={() => router.push(`/dashboard/all-product/${product._id}`)}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded transition"
-                            title="View"
-                          >
-                            <Eye size={18} />
-                          </button>
-                          <button
-                            onClick={() =>
-                              router.push(`/dashboard/all-product/${product._id}?edit=true`)
-                            }
-                            className="p-2 text-green-600 hover:bg-green-50 rounded transition"
-                            title="Edit"
-                          >
-                            <Edit2 size={18} />
-                          </button>
-                          <button
-                            onClick={() => setDeleteConfirm(product._id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded transition"
-                            title="Delete"
-                          >
-                            <Trash2 size={18} />
-                          </button>
+                          {product.isDeleted ? (
+                            <button
+                              onClick={() => handleRestore(product._id)}
+                              className="p-2 text-orange-600 hover:bg-orange-50 rounded transition"
+                              title="Restore"
+                            >
+                              <RotateCcw size={18} />
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => router.push(`/dashboard/all-product/${product._id}`)}
+                                className="p-2 text-blue-600 hover:bg-blue-50 rounded transition"
+                                title="View"
+                              >
+                                <Eye size={18} />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  router.push(`/dashboard/all-product/${product._id}?edit=true`)
+                                }
+                                className="p-2 text-green-600 hover:bg-green-50 rounded transition"
+                                title="Edit"
+                              >
+                                <Edit2 size={18} />
+                              </button>
+                              <button
+                                onClick={() => setDeleteConfirm(product._id)}
+                                className="p-2 text-red-600 hover:bg-red-50 rounded transition"
+                                title="Delete"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -533,26 +558,37 @@ const AllProductsPage = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <button
-                      onClick={() => router.push(`/dashboard/all-product/${product._id}`)}
-                      className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded text-sm font-medium hover:bg-blue-100 transition"
-                    >
-                      View
-                    </button>
-                    <button
-                      onClick={() =>
-                        router.push(`/dashboard/all-product/${product._id}?edit=true`)
-                      }
-                      className="flex-1 px-3 py-2 bg-green-50 text-green-600 rounded text-sm font-medium hover:bg-green-100 transition"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => setDeleteConfirm(product._id)}
-                      className="flex-1 px-3 py-2 bg-red-50 text-red-600 rounded text-sm font-medium hover:bg-red-100 transition"
-                    >
-                      Delete
-                    </button>
+                    {product.isDeleted ? (
+                      <button
+                        onClick={() => handleRestore(product._id)}
+                        className="flex-1 px-3 py-2 bg-orange-50 text-orange-600 rounded text-sm font-medium hover:bg-orange-100 transition"
+                      >
+                        Restore
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => router.push(`/dashboard/all-product/${product._id}`)}
+                          className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded text-sm font-medium hover:bg-blue-100 transition"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() =>
+                            router.push(`/dashboard/all-product/${product._id}?edit=true`)
+                          }
+                          className="flex-1 px-3 py-2 bg-green-50 text-green-600 rounded text-sm font-medium hover:bg-green-100 transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => setDeleteConfirm(product._id)}
+                          className="flex-1 px-3 py-2 bg-red-50 text-red-600 rounded text-sm font-medium hover:bg-red-100 transition"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}
@@ -560,7 +596,7 @@ const AllProductsPage = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-8 px-6 py-4 bg-white rounded-lg border border-gray-200">
+              <div className="flex flex-col md:flex-row gap-3 md:gap-0 items-center justify-between mt-8 px-6 py-4 bg-white rounded-lg border border-gray-200">
                 <div className="text-sm text-gray-600">
                   Showing{' '}
                   <span className="font-semibold">

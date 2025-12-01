@@ -5,9 +5,10 @@ import { restoreProduct } from '@/app/server/controllers/productController.js';
  * POST /api/product/[id]/restore
  * Restore a soft-deleted product
  */
-export async function POST(req) {
+export async function POST(req, { params }) {
   try {
-    const response = await restoreProduct(req);
+    const awaitedParams = await params;
+    const response = await restoreProduct(req, awaitedParams);
     return response;
   } catch (error) {
     return NextResponse.json(
