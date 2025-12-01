@@ -40,7 +40,7 @@ const trainingRegistrationSchema = new mongoose.Schema(
     },
     sessionDate: {
       type: String,
-      enum: ['december', 'january', 'february', 'march'],
+      enum: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'],
       required: true,
     },
     referralSource: {
@@ -64,7 +64,7 @@ const trainingRegistrationSchema = new mongoose.Schema(
     },
     paymentAmount: {
       type: Number,
-      default: 150000,
+      default: 0,
     },
     notes: {
       type: String,

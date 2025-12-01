@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images  } from 'lucide-react';
+import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images, Store, ShoppingBag, Component, GraduationCap, User, Truck  } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext'
 
 function Icon({ name }) {
@@ -44,6 +44,30 @@ function Icon({ name }) {
     return (
       <Images className="w-5 h-5" />
     )
+    case 'Orders':
+    return (
+      <Store className="w-5 h-5" />
+    )
+    case 'Products':
+    return (
+      <ShoppingBag className="w-5 h-5" />
+    )
+    case 'Coupons':
+    return (
+      <Component className="w-5 h-5" />
+    )
+    case 'Training':
+    return (
+      <GraduationCap className="w-5 h-5" />
+    )
+    case 'Profile':
+    return (
+      <User className="w-5 h-5" />
+    )
+    case 'Track':
+    return (
+      <Truck className="w-5 h-5" />
+    )
     default:
       return null
   }
@@ -56,11 +80,11 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
   // Define menu items with role requirements
   const items = [
     { href: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['admin', 'customer', 'staff-member'] },
-    { href: '/dashboard/order', label: 'Orders', icon: 'dashboard', roles: ['admin', 'staff-member'] },
+    { href: '/dashboard/order', label: 'Orders', icon: 'Orders', roles: ['admin', 'staff-member'] },
     {
       href: '/dashboard/products',
       label: 'Products',
-      icon: 'projects',
+      icon: 'Products',
       roles: ['admin', 'staff-member'],
       children: [
         { href: '/dashboard/add-product', label: 'Add Product', roles: ['admin', 'staff-member'] },
@@ -73,7 +97,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/coupon',
       label: 'Coupons',
-      icon: 'projects',
+      icon: 'Coupons',
       roles: ['admin', 'staff-member'],
       children: [
         { href: '/dashboard/add-coupon', label: 'Add Coupon', roles: ['admin'] },
@@ -84,7 +108,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/training-registration',
       label: 'Manage Training',
-      icon: 'projects',
+      icon: 'Training',
       roles: ['admin', 'staff-member'],
       children: [
         { href: '/dashboard/training-registration', label: 'Training Registration', roles: ['admin'] },
@@ -145,8 +169,8 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
         { href: '/dashboard/all-gallery', label: 'All Gallery', roles: ['admin', 'staff-member'] },
       ]
     },
-    { href: '/dashboard/track-order', label: 'Track Your Orders', icon: 'dashboard', roles: ['customer'] },
-    { href: '/dashboard/my-profile', label: 'Profile', icon: 'dashboard', roles: ['admin', 'customer', 'staff-member'] },
+    { href: '/track-order', label: 'Track Your Orders', icon: 'Track', roles: ['customer', 'admin'] },
+    { href: '/dashboard/my-profile', label: 'Profile', icon: 'Profile', roles: ['admin', 'customer', 'staff-member'] },
   ]
 
   // Helper function to check if user has access to item

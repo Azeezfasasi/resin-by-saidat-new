@@ -1,4 +1,11 @@
 import TrainingRegistration from '@/app/server/models/TrainingRegistration';
+import {
+  sendTrainingRegistrationConfirmationEmail,
+  sendAdminTrainingRegistrationNotification,
+  sendTrainingStatusUpdateEmail,
+  sendAdminTrainingStatusUpdateNotification,
+  sendTrainingConfirmationEmail,
+} from '@/app/server/utils/trainingEmailService.js';
 
 // Get all training registrations
 export async function getAllRegistrations(req) {
@@ -134,8 +141,15 @@ export async function createRegistration(data) {
       status: 'pending',
     });
 
-    // TODO: Send confirmation email via Brevo
-    // TODO: Add to Brevo contacts
+    // Send confirmation email to candidate (async, non-blocking)
+    sendTrainingRegistrationConfirmationEmail(registration).catch(error => 
+      console.error('Failed to send training registration confirmation email:', error)
+    );
+
+    // Send admin notification email (async, non-blocking)
+    sendAdminTrainingRegistrationNotification(registration).catch(error => 
+      console.error('Failed to send admin training registration notification:', error)
+    );
 
     return {
       success: true,
@@ -171,18 +185,45 @@ export async function updateRegistrationStatus(id, status) {
       };
     }
 
-    const registration = await TrainingRegistration.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    const currentRegistration = await TrainingRegistration.findById(id);
 
-    if (!registration) {
+    if (!currentRegistration) {
       return {
         success: false,
         error: 'Registration not found',
         statusCode: 404,
       };
+    }
+
+    const previousStatus = currentRegistration.status;
+    currentRegistration.status = status;
+    const registration = await currentRegistration.save();
+
+    // Prepare change details
+    const changeDetails = {
+      statusChanged: previousStatus !== status,
+      previousStatus,
+    };
+
+    // Send status update email to candidate (async, non-blocking)
+    if (changeDetails.statusChanged) {
+      sendTrainingStatusUpdateEmail(registration, changeDetails).catch(error =>
+        console.error('Failed to send training status update email:', error)
+      );
+
+      // If confirmed, also send confirmation email
+      if (status === 'confirmed') {
+        sendTrainingConfirmationEmail(registration).catch(error =>
+          console.error('Failed to send training confirmation email:', error)
+        );
+      }
+    }
+
+    // Send admin notification (async, non-blocking)
+    if (changeDetails.statusChanged) {
+      sendAdminTrainingStatusUpdateNotification(registration, changeDetails).catch(error =>
+        console.error('Failed to send admin training status update notification:', error)
+      );
     }
 
     return {
@@ -212,6 +253,18 @@ export async function updatePaymentStatus(id, paymentStatus, paymentAmount) {
       };
     }
 
+    const currentRegistration = await TrainingRegistration.findById(id);
+
+    if (!currentRegistration) {
+      return {
+        success: false,
+        error: 'Registration not found',
+        statusCode: 404,
+      };
+    }
+
+    const previousPaymentStatus = currentRegistration.paymentStatus;
+
     const updateData = { paymentStatus };
     if (paymentAmount) {
       updateData.paymentAmount = paymentAmount;
@@ -222,18 +275,34 @@ export async function updatePaymentStatus(id, paymentStatus, paymentAmount) {
       updateData.status = 'paid';
     }
 
-    const registration = await TrainingRegistration.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true }
-    );
+    currentRegistration.paymentStatus = paymentStatus;
+    if (paymentAmount) {
+      currentRegistration.paymentAmount = paymentAmount;
+    }
+    if (paymentStatus === 'paid') {
+      currentRegistration.status = 'paid';
+    }
 
-    if (!registration) {
-      return {
-        success: false,
-        error: 'Registration not found',
-        statusCode: 404,
-      };
+    const registration = await currentRegistration.save();
+
+    // Prepare change details
+    const changeDetails = {
+      paymentStatusChanged: previousPaymentStatus !== paymentStatus,
+      previousPaymentStatus,
+    };
+
+    // Send status update email to candidate (async, non-blocking)
+    if (changeDetails.paymentStatusChanged) {
+      sendTrainingStatusUpdateEmail(registration, changeDetails).catch(error =>
+        console.error('Failed to send training payment status update email:', error)
+      );
+    }
+
+    // Send admin notification (async, non-blocking)
+    if (changeDetails.paymentStatusChanged) {
+      sendAdminTrainingStatusUpdateNotification(registration, changeDetails).catch(error =>
+        console.error('Failed to send admin training payment status update notification:', error)
+      );
     }
 
     return {
@@ -271,18 +340,44 @@ export async function updateRegistration(id, updateData) {
       }
     });
 
-    const registration = await TrainingRegistration.findByIdAndUpdate(
-      id,
-      filteredData,
-      { new: true, runValidators: true }
-    );
+    const currentRegistration = await TrainingRegistration.findById(id);
 
-    if (!registration) {
+    if (!currentRegistration) {
       return {
         success: false,
         error: 'Registration not found',
         statusCode: 404,
       };
+    }
+
+    // Check what changed
+    const changeDetails = {
+      detailsChanged: false,
+      changedFields: [],
+    };
+
+    Object.keys(filteredData).forEach(field => {
+      if (currentRegistration[field] !== filteredData[field]) {
+        changeDetails.detailsChanged = true;
+        changeDetails.changedFields.push(field);
+      }
+    });
+
+    Object.assign(currentRegistration, filteredData);
+    const registration = await currentRegistration.save();
+
+    // Send status update email to candidate if details changed (async, non-blocking)
+    if (changeDetails.detailsChanged) {
+      sendTrainingStatusUpdateEmail(registration, changeDetails).catch(error =>
+        console.error('Failed to send training details update email:', error)
+      );
+    }
+
+    // Send admin notification if details changed (async, non-blocking)
+    if (changeDetails.detailsChanged) {
+      sendAdminTrainingStatusUpdateNotification(registration, changeDetails).catch(error =>
+        console.error('Failed to send admin training details update notification:', error)
+      );
     }
 
     return {

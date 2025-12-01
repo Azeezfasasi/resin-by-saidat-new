@@ -12,7 +12,7 @@ export default function TrainingRegistrationForm() {
     experience: 'beginner',
     city: '',
     occupation: '',
-    sessionDate: 'december',
+    sessionDate: '',
     referralSource: '',
     agreeTerms: false,
   });
@@ -226,10 +226,19 @@ export default function TrainingRegistrationForm() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white"
               >
-                <option value="december">December 15 - 19, 2025</option>
-                <option value="january">January 12 - 16, 2026</option>
-                <option value="february">February 9 - 13, 2026</option>
-                <option value="march">March 9 - 13, 2026</option>
+                <option>-- Choose Session --</option>
+                <option value="january">January</option>
+                <option value="february">February</option>
+                <option value="march">March</option>
+                <option value="april">April</option>
+                <option value="may">May</option>
+                <option value="june">June</option>
+                <option value="july">July</option>
+                <option value="august">August</option>
+                <option value="september">September</option>
+                <option value="october">October</option>
+                <option value="november">November</option>
+                <option value="december">December</option>
               </select>
             </div>
           </div>
