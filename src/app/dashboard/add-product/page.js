@@ -38,9 +38,21 @@ const AddProductPage = () => {
       }, 1500);
     } catch (error) {
       console.error('Error creating product:', error);
+      
+      // Try to get more detailed error info
+      let errorMessage = error.message || 'Failed to create product. Please try again.';
+      
+      // Check if the error response has more details
+      if (data?.error) {
+        errorMessage = data.error;
+      }
+      if (data?.details) {
+        errorMessage = `${errorMessage} - ${data.details}`;
+      }
+      
       setAlert({
         type: 'error',
-        message: error.message || 'Failed to create product. Please try again.',
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);

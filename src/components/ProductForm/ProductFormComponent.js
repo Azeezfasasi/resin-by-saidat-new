@@ -45,6 +45,7 @@ const ProductFormComponent = ({
       attributes: initialData.attributes || [],
       featured: initialData.featured || false,
       status: initialData.status || 'draft',
+      deliveryLocations: initialData.deliveryLocations || [],
       existingImages: (initialData.images || []).map(img => ({
         url: img.url,
         name: img.alt || 'product image',
@@ -77,6 +78,7 @@ const ProductFormComponent = ({
       attributes: [],
       featured: false,
       status: 'draft',
+      deliveryLocations: [],
       existingImages: [],
       newImages: [],
     }
@@ -90,6 +92,12 @@ const ProductFormComponent = ({
   const [attributeInput, setAttributeInput] = useState({
     name: '',
     value: '',
+  });
+  const [deliveryInput, setDeliveryInput] = useState({
+    locationId: '',
+    name: '',
+    shippingCost: '',
+    estimatedDays: '',
   });
 
   // Fetch categories on mount
@@ -312,13 +320,36 @@ const ProductFormComponent = ({
     // Prepare form data with images
     const submitData = new FormData();
 
-    // Add text fields
+    // Add text fields and handle objects carefully
     Object.keys(formData).forEach((key) => {
       if (key !== 'existingImages' && key !== 'newImages') {
         if (typeof formData[key] === 'object') {
-          submitData.append(key, JSON.stringify(formData[key]));
+          // Only stringify objects that have actual values
+          if (key === 'weight' || key === 'dimensions') {
+            // For weight and dimensions, only include if they have values
+            const obj = formData[key];
+            let hasValue = false;
+            
+            if (key === 'weight') {
+              hasValue = obj.value && obj.value.toString().trim();
+            } else if (key === 'dimensions') {
+              hasValue = (obj.length && obj.length.toString().trim()) || 
+                        (obj.width && obj.width.toString().trim()) || 
+                        (obj.height && obj.height.toString().trim());
+            }
+            
+            if (hasValue) {
+              submitData.append(key, JSON.stringify(obj));
+            }
+          } else {
+            // For other objects (attributes, etc.), always stringify
+            submitData.append(key, JSON.stringify(formData[key]));
+          }
         } else {
-          submitData.append(key, formData[key]);
+          // For primitives, only append if not empty
+          if (formData[key] !== '' && formData[key] !== null && formData[key] !== undefined) {
+            submitData.append(key, formData[key]);
+          }
         }
       }
     });

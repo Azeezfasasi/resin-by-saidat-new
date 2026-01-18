@@ -43,12 +43,62 @@ export const createProduct = async (req) => {
     const featured = formData.get('featured') === 'true';
     const status = formData.get('status') || 'draft';
     
-    // Parse JSON fields
-    const attributes = formData.get('attributes') ? JSON.parse(formData.get('attributes')) : [];
-    let deliveryLocations = formData.get('deliveryLocations') ? JSON.parse(formData.get('deliveryLocations')) : [];
-    const weight = formData.get('weight') ? JSON.parse(formData.get('weight')) : {};
-    const dimensions = formData.get('dimensions') ? JSON.parse(formData.get('dimensions')) : {};
-    const metaKeywords = formData.get('metaKeywords') ? JSON.parse(formData.get('metaKeywords')) : [];
+    // Parse JSON fields with error handling
+    let attributes = [];
+    let deliveryLocations = [];
+    let weight = {};
+    let dimensions = {};
+    let metaKeywords = [];
+    
+    try {
+      const attributesStr = formData.get('attributes');
+      if (attributesStr) {
+        attributes = JSON.parse(attributesStr);
+      }
+    } catch (e) {
+      console.warn('Error parsing attributes:', e.message);
+      attributes = [];
+    }
+    
+    try {
+      const deliveryStr = formData.get('deliveryLocations');
+      if (deliveryStr) {
+        deliveryLocations = JSON.parse(deliveryStr);
+      }
+    } catch (e) {
+      console.warn('Error parsing deliveryLocations:', e.message);
+      deliveryLocations = [];
+    }
+    
+    try {
+      const weightStr = formData.get('weight');
+      if (weightStr) {
+        weight = JSON.parse(weightStr);
+      }
+    } catch (e) {
+      console.warn('Error parsing weight:', e.message);
+      weight = {};
+    }
+    
+    try {
+      const dimensionsStr = formData.get('dimensions');
+      if (dimensionsStr) {
+        dimensions = JSON.parse(dimensionsStr);
+      }
+    } catch (e) {
+      console.warn('Error parsing dimensions:', e.message);
+      dimensions = {};
+    }
+    
+    try {
+      const keywordsStr = formData.get('metaKeywords');
+      if (keywordsStr) {
+        metaKeywords = JSON.parse(keywordsStr);
+      }
+    } catch (e) {
+      console.warn('Error parsing metaKeywords:', e.message);
+      metaKeywords = [];
+    }
 
     // Validate required fields
     if (!name || !description || !category || !basePrice || stock === undefined) {
@@ -105,6 +155,28 @@ export const createProduct = async (req) => {
       estimatedDays: typeof loc.estimatedDays === 'string' ? parseInt(loc.estimatedDays, 10) : loc.estimatedDays,
     }));
 
+    // Sanitize weight object - only include if it has a value
+    if (weight && weight.value) {
+      weight = {
+        value: typeof weight.value === 'string' ? parseFloat(weight.value) : weight.value,
+        unit: weight.unit || 'kg'
+      };
+    } else {
+      weight = {};
+    }
+
+    // Sanitize dimensions object - only include if it has values
+    if (dimensions && (dimensions.length || dimensions.width || dimensions.height)) {
+      dimensions = {
+        length: dimensions.length ? (typeof dimensions.length === 'string' ? parseFloat(dimensions.length) : dimensions.length) : undefined,
+        width: dimensions.width ? (typeof dimensions.width === 'string' ? parseFloat(dimensions.width) : dimensions.width) : undefined,
+        height: dimensions.height ? (typeof dimensions.height === 'string' ? parseFloat(dimensions.height) : dimensions.height) : undefined,
+        unit: dimensions.unit || 'cm'
+      };
+    } else {
+      dimensions = {};
+    }
+
     // Build product object with only valid fields
     const productData = {
       name,
@@ -154,11 +226,40 @@ export const createProduct = async (req) => {
     }, { status: 201 });
   } catch (error) {
     console.error('Create product error:', error);
+    
+    // Handle MongoDB validation errors
+    let errorMessage = 'Failed to create product';
+    let errorDetails = error.message;
+    let statusCode = 500;
+    
+    // Handle Mongoose validation errors
+    if (error.name === 'ValidationError') {
+      statusCode = 400;
+      const messages = Object.values(error.errors).map(err => err.message);
+      errorMessage = 'Validation error: ' + messages.join(', ');
+      errorDetails = messages[0];
+    }
+    
+    // Handle duplicate key errors (E11000)
+    if (error.code === 11000) {
+      statusCode = 409;
+      const field = Object.keys(error.keyPattern)[0];
+      errorMessage = `A product with this ${field} already exists`;
+      errorDetails = `Duplicate ${field}`;
+    }
+    
+    // Handle MongoDB JSON schema validation errors
+    if (error.message && error.message.includes('string did not match')) {
+      statusCode = 400;
+      errorMessage = 'Validation error: ' + error.message;
+    }
+    
     return NextResponse.json({
       success: false,
-      message: 'Failed to create product',
-      error: error.message,
-    }, { status: 500 });
+      message: errorMessage,
+      error: errorDetails,
+      details: error.details || undefined,
+    }, { status: statusCode });
   }
 };
 
